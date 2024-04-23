@@ -1,0 +1,49 @@
+.event-summary p {
+    padding-top: 0;
+}
+.event-summary {
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+.tomc-event-presenter-pic{
+    margin-top: 10px;
+}
+.tomc-event-presenter-pic img{
+    display: block;
+    margin: 0px auto 10px auto;
+    border-radius: 50%;
+}
+.tomc-event-presenter-bio{
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: solid #e44e2d 2px;
+}
+#tomc-event-presenter-select, #tomc-event-attendance-select{
+    text-align: center;
+    border-radius: 20px;
+    margin: 0px 10px 30px 10px;
+}
+#tomc-event-attendance-add-presenter, #tomc-event-attendance-add-user{
+    background-color: #0c6980;
+    color: white;
+    border-radius: 15px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 0px 10px 30px 10px;
+}
+#tomc--save-new-event{
+    background-color: #4c0548;
+    color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0px 10px 30px 10px;
+}
+#tomc--cancel-new-event{
+    background-color: #893e43;
+    color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0px 10px 30px 10px;
+}
