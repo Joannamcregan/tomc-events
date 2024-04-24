@@ -30,6 +30,17 @@
     padding: 5px 10px;
     cursor: pointer;
     margin: 0px 10px 30px 10px;
+    text-align: center;
+}
+.tomc--manage-event{
+    background-color: #0c6980;
+    color: white;
+    border-radius: 15px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 10px auto 30px auto;
+    display: block;
+    text-align: center;
 }
 #tomc--save-new-event{
     background-color: #4c0548;
@@ -38,6 +49,7 @@
     padding: 10px 20px;
     cursor: pointer;
     margin: 0px 10px 30px 10px;
+    text-align: center;
 }
 #tomc--cancel-new-event{
     background-color: #893e43;
@@ -46,4 +58,12 @@
     padding: 10px 20px;
     cursor: pointer;
     margin: 0px 10px 30px 10px;
+    text-align: center;
+}
+.tomc-events-users-container{
+    min-height: 100px;
+    width: 90%;
+    border: solid #0c6980 2px;
+    border-radius: 15px;
+    margin: 10px auto;
 }
