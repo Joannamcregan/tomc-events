@@ -42,7 +42,7 @@
     display: block;
     text-align: center;
 }
-#tomc--save-new-event{
+#tomc--save-new-event, #tomc--save-participant-record{
     background-color: #4c0548;
     color: white;
     border-radius: 15px;
@@ -51,7 +51,7 @@
     margin: 0px 10px 30px 10px;
     text-align: center;
 }
-#tomc--cancel-new-event{
+#tomc--cancel-new-event, #tomc--cancel-participant-record{
     background-color: #893e43;
     color: white;
     border-radius: 15px;
@@ -63,6 +63,13 @@
 .tomc-events-users-container{
     min-height: 100px;
     width: 90%;
+    border: solid #0c6980 2px;
+    border-radius: 15px;
+    margin: 10px auto;
+}
+#tomc-events-time-entered{
+    width: 250px;
+    height: 40px;
     border: solid #0c6980 2px;
     border-radius: 15px;
     margin: 10px auto;
