@@ -13,6 +13,9 @@ class TOMCEventsPlugin {
         global $wpdb;
         $this->charset = $wpdb->get_charset_collate();
         $this->posts_table = $wpdb->prefix . "posts";
+        $this->users_table = $wpdb->prefix . "users";
+        $this->event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
+        $this->event_signups_table = $wpdb->prefix . "tomc_event_signups";
 
         add_action('activate_tomc-events/tomc-events.php', array($this, 'onActivate'));
         // add_action('init', array($this, 'onActivate'));
@@ -49,9 +52,9 @@ class TOMCEventsPlugin {
     function pluginFiles(){
         wp_enqueue_style('tomc_events_styles');
         wp_enqueue_script('tomc-events-js', plugin_dir_url(__FILE__) . '/build/index.js', array('jquery'), '1.0', true);
-        // wp_localize_script('tomc-events-js', 'tomcBookorgData', array(
-        //     'root_url' => get_site_url()
-        // ));
+        wp_localize_script('tomc-events-js', 'tomcBookorgData', array(
+            'root_url' => get_site_url()
+        ));
     }
 
     function addEventsPage() {
@@ -86,15 +89,45 @@ class TOMCEventsPlugin {
         if (post_exists('My Events', '', '', 'page', 'publish') == 0){
             $this->addMyEventsPage();
         }
+
+        dbDelta("CREATE TABLE IF NOT EXISTS $this->event_tickets_table (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            eventid bigint(20) unsigned NOT NULL,
+            productid bigint(20) unsigned NOT NULL,
+            createddate datetime NOT NULL,
+            createdby bigint(20) unsigned NOT NULL,
+            PRIMARY KEY  (id),
+            FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id),
+            FOREIGN KEY  (productid) REFERENCES $this->posts_table(id),
+            FOREIGN KEY  (createdby) REFERENCES $this->users_table(id)
+        ) $this->charset;");
+
+        dbDelta("CREATE TABLE IF NOT EXISTS $this->event_signups_table (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            eventid bigint(20) unsigned NOT NULL,
+            participantid bigint(20) unsigned NOT NULL,
+            signupdate datetime NOT NULL,
+            didattend smallint(1) NULL,
+            recordedby bigint(20) unsigned NOT NULL,
+            recordeddate datetime NOT NULL,
+            PRIMARY KEY  (id),
+            FOREIGN KEY  (participantid) REFERENCES $this->users_table(id),
+            FOREIGN KEY  (recordedby) REFERENCES $this->users_table(id),
+            FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id)
+        ) $this->charset;");
+
+        //take care of event date dateAndTime, locationLink, and isMembersOnly with metadata
     }
 
     function loadTemplate($template){
         if (is_page('my-events')){
             return plugin_dir_path(__FILE__) . 'inc/template-my-events.php';
+        } elseif (is_page('events')){
+            return plugin_dir_path(__FILE__) . 'inc/template-events.php';
         } elseif (is_archive('event')){
-            return plugin_dir_path(__FILE__) . 'inc/archive-event.php';
-        } elseif (is_singular('event')){
-            return plugin_dir_path(__FILE__) . 'inc/single-event.php';
+            return plugin_dir_path(__FILE__) . 'inc/template-events.php';
+        // } elseif (is_singular('event')){
+        //     return plugin_dir_path(__FILE__) . 'inc/single-event.php';
         } else
         return $template;
     }

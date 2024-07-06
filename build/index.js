@@ -17,10 +17,16 @@ __webpack_require__.r(__webpack_exports__);
 
 class EventForms {
   constructor() {
+    //Add a new event---------------------------------------------------------------------------
     this.submitNewEventButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc--save-new-event');
     this.cancelNewEventButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc--cancel-new-event');
     this.newEventNameInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-book-organization-new-event');
     this.newEventTextarea = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-book-organization--new-event-details');
+    this.displayEventTime = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-events-time-entered');
+    this.eventTimePicker = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-date-time-picker');
+    this.presenterSelect = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-presenter-select');
+    this.addPresenterButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-attendance-add-presenter');
+    this.eventPresenterContainer = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-presentation-container');
     this.events();
   }
   events() {

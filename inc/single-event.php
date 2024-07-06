@@ -1,18 +1,11 @@
-<?php get_header();
+title (post_title)
 
-?><main>
-    <div class="banner"><h1 class="centered-text">Event</h1></div>
-    <br>
-    <br>
-    <div class="generic-wrapper-2">
-        <div class="generic-wrapper-1">
-            <div class="generic-wrapper-0">
-                <h2 class="centered-text">Coming soon!</h2>
-                <p>We're excited for members to share events with each other.</p>
-            </div>
-        </div>
-    </div>
-</main>
+date and time (post meta)
 
-<?php get_footer();
-?>
+whether members only
+
+description (post_content)
+
+event link (post meta)
+
+posted by (link to user page)
