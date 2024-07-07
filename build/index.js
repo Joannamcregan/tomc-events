@@ -2,6 +2,77 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/modules/Event-Archive.js":
+/*!**************************************!*\
+  !*** ./src/modules/Event-Archive.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+class EventArchive {
+  constructor() {
+    this.getUpcomingEventsButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-upcoming-events-button');
+    this.getPastEventsButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-past-events-button');
+    this.upcomingEventsContainer = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-upcoming-events-section');
+    this.pastEventsContainer = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-past-events-section');
+    this.events();
+  }
+  events() {
+    this.getUpcomingEventsButton.on('click', this.getUpcomingEvents.bind(this));
+    this.getPastEventsButton.on('click', this.getPastEvents.bind(this));
+  }
+  getUpcomingEvents() {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+      },
+      url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEvents',
+      type: 'GET',
+      success: response => {
+        console.log(response);
+        if (response.length > 0) {
+          this.getUpcomingEventsButton.addClass('hidden');
+          this.getUpcomingEventsButton.removeClass('purple-button');
+        }
+      },
+      failure: response => {
+        console.log(response);
+      }
+    });
+  }
+  getPastEvents() {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+      },
+      url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getPastEvents',
+      type: 'GET',
+      success: response => {
+        console.log(response);
+        if (response.length > 0) {
+          this.getPastEventsButton.addClass('hidden');
+          this.getPastEventsButton.removeClass('blue-button');
+          let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Past Events');
+          this.pastEventsContainer.append(newHeading);
+          for (let i = 0; i < response.length; i++) {}
+        }
+      },
+      failure: response => {
+        console.log(response);
+      }
+    });
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EventArchive);
+
+/***/ }),
+
 /***/ "./src/modules/Event-Form.js":
 /*!***********************************!*\
   !*** ./src/modules/Event-Form.js ***!
@@ -131,8 +202,11 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_Event_Form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/Event-Form */ "./src/modules/Event-Form.js");
+/* harmony import */ var _modules_Event_Archive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Event-Archive */ "./src/modules/Event-Archive.js");
+
 
 const tomcEventForms = new _modules_Event_Form__WEBPACK_IMPORTED_MODULE_0__["default"]();
+const tomcEventArchive = new _modules_Event_Archive__WEBPACK_IMPORTED_MODULE_1__["default"]();
 })();
 
 /******/ })()
