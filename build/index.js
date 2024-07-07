@@ -35,10 +35,33 @@ class EventArchive {
       url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEvents',
       type: 'GET',
       success: response => {
-        console.log(response);
         if (response.length > 0) {
           this.getUpcomingEventsButton.addClass('hidden');
           this.getUpcomingEventsButton.removeClass('purple-button');
+          let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Upcoming Events');
+          this.upcomingEventsContainer.append(newHeading);
+          let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
+          this.upcomingEventsContainer.append(newSection);
+          for (let i = 0; i < response.length; i++) {
+            let newLink = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<a/>').attr('href', response[i]['post_url']);
+            newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h3/>').html(response[i]['post_title']);
+            newLink.append(newHeading);
+            newSection.append(newLink);
+            let newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>');
+            let newEm = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html(response[i]['time_string']);
+            newP.append(newEm);
+            newSection.append(newP);
+            newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['post_content']);
+            newSection.append(newP);
+            if (response[i]['members_only'] == 1) {
+              newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html('');
+              newEm = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<em/>').html('members only');
+              newP.append(newEm);
+              newSection.append(newP);
+            }
+            let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
+            newSection.append(newLine);
+          }
         }
       },
       failure: response => {
@@ -54,13 +77,33 @@ class EventArchive {
       url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getPastEvents',
       type: 'GET',
       success: response => {
-        console.log(response);
         if (response.length > 0) {
           this.getPastEventsButton.addClass('hidden');
           this.getPastEventsButton.removeClass('blue-button');
           let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Past Events');
           this.pastEventsContainer.append(newHeading);
-          for (let i = 0; i < response.length; i++) {}
+          let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
+          this.pastEventsContainer.append(newSection);
+          for (let i = 0; i < response.length; i++) {
+            let newLink = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<a/>').attr('href', response[i]['post_url']);
+            newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h3/>').html(response[i]['post_title']);
+            newLink.append(newHeading);
+            newSection.append(newLink);
+            let newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>');
+            let newEm = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html(response[i]['time_string']);
+            newP.append(newEm);
+            newSection.append(newP);
+            newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['post_content']);
+            newSection.append(newP);
+            if (response[i]['members_only'] == 1) {
+              newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html('');
+              newEm = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<em/>').html('members only');
+              newP.append(newEm);
+              newSection.append(newP);
+            }
+            let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
+            newSection.append(newLine);
+          }
         }
       },
       failure: response => {

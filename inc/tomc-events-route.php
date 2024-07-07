@@ -17,7 +17,7 @@ function getUpcomingEvents(){
     global $wpdb;
     $posts_table = $wpdb->prefix . "posts";
     $postmeta_table = $wpdb->prefix . "postmeta";
-    $query = 'select posts.post_title, posts.post_content, timestring.meta_value as time_string, membersonly.meta_value as members_only 
+    $query = 'select posts.id as post_url, posts.post_title, posts.post_content, timestring.meta_value as time_string, membersonly.meta_value as members_only 
     from %i posts
     join %i eventdate on posts.id = eventdate.post_id
     and eventdate.meta_key = "_tomc_event_date"
@@ -35,7 +35,7 @@ function getPastEvents(){
     global $wpdb;
     $posts_table = $wpdb->prefix . "posts";
     $postmeta_table = $wpdb->prefix . "postmeta";
-    $query = 'select posts.post_title, posts.post_content, timestring.meta_value as time_string, membersonly.meta_value as members_only 
+    $query = 'select posts.id as post_url, posts.post_title, posts.post_content, timestring.meta_value as time_string, membersonly.meta_value as members_only 
     from %i posts
     join %i eventdate on posts.id = eventdate.post_id
     and eventdate.meta_key = "_tomc_event_date"
@@ -44,7 +44,11 @@ function getPastEvents(){
     join %i membersonly on posts.id = membersonly.post_id
     and membersonly.meta_key = "_tomc_event_is_members_only"
     where posts.post_type = "event"
-    and eventdate.meta_value < now()';
+    and eventdate.meta_value < now()
+    order by eventdate.meta_value desc';
     $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $postmeta_table, $postmeta_table, $postmeta_table), ARRAY_A);
+    for($i = 0; $i < count($results); $i++){
+        $results[$i]['post_url'] = get_permalink($results[$i]['post_url']);
+    }
     return $results;
 }
