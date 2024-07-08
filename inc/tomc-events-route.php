@@ -32,6 +32,9 @@ function getUpcomingEvents(){
     where posts.post_type = "event"
     and eventdate.meta_value >= now()';
     $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $postmeta_table, $postmeta_table, $postmeta_table), ARRAY_A);
+    for($i = 0; $i < count($results); $i++){
+        $results[$i]['post_url'] = get_permalink($results[$i]['post_url']);
+    }
     return $results;
 }
 

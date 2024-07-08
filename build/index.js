@@ -122,10 +122,10 @@ class EventArchive {
 
 /***/ }),
 
-/***/ "./src/modules/Event-Form.js":
-/*!***********************************!*\
-  !*** ./src/modules/Event-Form.js ***!
-  \***********************************/
+/***/ "./src/modules/My-Events.js":
+/*!**********************************!*\
+  !*** ./src/modules/My-Events.js ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -135,33 +135,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 
-class EventForms {
+class MyEvents {
   constructor() {
     //Add a new event---------------------------------------------------------------------------
-    this.submitNewEventButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc--save-new-event');
-    this.cancelNewEventButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc--cancel-new-event');
-    this.newEventNameInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-book-organization-new-event');
-    this.newEventTextarea = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-book-organization--new-event-details');
-    this.displayEventTime = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-events-time-entered');
-    this.eventTimePicker = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-date-time-picker');
-    this.presenterSelect = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-presenter-select');
-    this.addPresenterButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-attendance-add-presenter');
-    this.eventPresenterContainer = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-presentation-container');
+    this.addEventSpan = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-add-event-span');
     this.events();
   }
   events() {
-    this.submitNewEventButton.on('click', this.submitNewEvent.bind(this));
-    this.cancelNewEventButton.on('click', this.cancelNewEvent.bind(this));
+    this.addEventSpan.on('click', this.addNewEvent.bind(this));
   }
-  submitNewEvent() {
-    console.log('submitting new event');
-  }
-  cancelNewEvent() {
-    this.newEventNameInput.val('');
-    this.newEventTextarea.val('');
+  addNewEvent() {
+    console.log('adding a new event');
   }
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EventForms);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyEvents);
 
 /***/ }),
 
@@ -250,11 +237,11 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_Event_Form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/Event-Form */ "./src/modules/Event-Form.js");
+/* harmony import */ var _modules_My_Events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/My-Events */ "./src/modules/My-Events.js");
 /* harmony import */ var _modules_Event_Archive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Event-Archive */ "./src/modules/Event-Archive.js");
 
 
-const tomcEventForms = new _modules_Event_Form__WEBPACK_IMPORTED_MODULE_0__["default"]();
+const myEvents = new _modules_My_Events__WEBPACK_IMPORTED_MODULE_0__["default"]();
 const tomcEventArchive = new _modules_Event_Archive__WEBPACK_IMPORTED_MODULE_1__["default"]();
 })();
 

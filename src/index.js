@@ -1,5 +1,5 @@
-import EventForms from "./modules/Event-Form";
+import MyEvents from "./modules/My-Events";
 import EventArchive from "./modules/Event-Archive";
 
-const tomcEventForms = new EventForms();
+const myEvents = new MyEvents();
 const tomcEventArchive = new EventArchive();

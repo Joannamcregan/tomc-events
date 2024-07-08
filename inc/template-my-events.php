@@ -10,19 +10,19 @@
 ?><main>
     <div class="banner"><h1 class="centered-text">My Events</h1></div>
     <br>
-    <span class="purple-span">Upcoming Registered Events</span>
+    <span class="purple-span" id="upcoming-registered-events-span">Upcoming Registered Events</span>
     <div id="tomc-registered-events-section">
 
     </div>
-    <span class="orange-span">Manage Upcoming Events</span>
+    <span class="orange-span" id="upcoming-registered-events-span">Manage Upcoming Events</span>
     <div id="tomc-manage-upcoming-events-section">
 
     </div>
-    <span class="blue-span">Manage Past Events</span>
+    <span class="blue-span" id="upcoming-registered-events-span">Manage Past Events</span>
     <div id="tomc-manage-past-events-section">
 
     </div>
-    <span id="tomc-add-event-span" class="purple-span">Add New Event</span>
+    <span class="purple-span" id="tomc-add-event-span">Add New Event</span>
     <div id="tomc-new-event-section">
 
     </div>

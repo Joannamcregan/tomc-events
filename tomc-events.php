@@ -127,8 +127,8 @@ class TOMCEventsPlugin {
             return plugin_dir_path(__FILE__) . 'inc/template-events.php';
         } elseif (is_archive('event')){
             return plugin_dir_path(__FILE__) . 'inc/template-events.php';
-        // } elseif (is_singular('event')){
-        //     return plugin_dir_path(__FILE__) . 'inc/single-event.php';
+        } elseif (is_singular('event')){
+            return plugin_dir_path(__FILE__) . 'inc/single-event.php';
         } else
         return $template;
     }
