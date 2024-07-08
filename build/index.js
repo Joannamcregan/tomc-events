@@ -35,11 +35,11 @@ class EventArchive {
       url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEvents',
       type: 'GET',
       success: response => {
+        this.getUpcomingEventsSpan.addClass('hidden');
+        this.getUpcomingEventsSpan.removeClass('purple-span');
+        let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Upcoming Events');
+        this.upcomingEventsContainer.append(newHeading);
         if (response.length > 0) {
-          this.getUpcomingEventsSpan.addClass('hidden');
-          this.getUpcomingEventsSpan.removeClass('purple-span');
-          let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Upcoming Events');
-          this.upcomingEventsContainer.append(newHeading);
           let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
           this.upcomingEventsContainer.append(newSection);
           for (let i = 0; i < response.length; i++) {
@@ -62,6 +62,9 @@ class EventArchive {
             let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
             newSection.append(newLine);
           }
+        } else {
+          let newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html('There are currently no upcoming events scheduled.');
+          this.upcomingEventsContainer.append(newP);
         }
       },
       failure: response => {
@@ -77,11 +80,11 @@ class EventArchive {
       url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getPastEvents',
       type: 'GET',
       success: response => {
+        this.getPastEventsSpan.addClass('hidden');
+        this.getPastEventsSpan.removeClass('blue-span');
+        let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Past Events');
+        this.pastEventsContainer.append(newHeading);
         if (response.length > 0) {
-          this.getPastEventsSpan.addClass('hidden');
-          this.getPastEventsSpan.removeClass('blue-span');
-          let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Past Events');
-          this.pastEventsContainer.append(newHeading);
           let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
           this.pastEventsContainer.append(newSection);
           for (let i = 0; i < response.length; i++) {
@@ -104,6 +107,9 @@ class EventArchive {
             let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
             newSection.append(newLine);
           }
+        } else {
+          let newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html("We haven't had any events yet!");
+          this.pastEventsContainer.append(newP);
         }
       },
       failure: response => {

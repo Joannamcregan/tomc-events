@@ -22,11 +22,11 @@ class EventArchive{
             url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEvents',
             type: 'GET',
             success: (response) => {
-                if (response.length > 0){
-                    this.getUpcomingEventsSpan.addClass('hidden');
-                    this.getUpcomingEventsSpan.removeClass('purple-span');
-                    let newHeading = $('<h2/>').addClass('centered-text').html('Upcoming Events');
-                    this.upcomingEventsContainer.append(newHeading);
+                this.getUpcomingEventsSpan.addClass('hidden');
+                this.getUpcomingEventsSpan.removeClass('purple-span');
+                let newHeading = $('<h2/>').addClass('centered-text').html('Upcoming Events');
+                this.upcomingEventsContainer.append(newHeading);
+                if (response.length > 0){                    
                     let newSection = $('<div/>').addClass('generic-content');
                     this.upcomingEventsContainer.append(newSection);
                     for (let i = 0; i < response.length; i++){
@@ -49,6 +49,9 @@ class EventArchive{
                         let newLine = $('<div/>').addClass('orange-yellow-line-break-30');
                         newSection.append(newLine);
                     }
+                } else {
+                    let newP = $('<p/>').addClass('centered-text').html('There are currently no upcoming events scheduled.');
+                    this.upcomingEventsContainer.append(newP);
                 }
             },
             failure: (response) => {
@@ -65,11 +68,11 @@ class EventArchive{
             url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getPastEvents',
             type: 'GET',
             success: (response) => {
+                this.getPastEventsSpan.addClass('hidden');
+                this.getPastEventsSpan.removeClass('blue-span');
+                let newHeading = $('<h2/>').addClass('centered-text').html('Past Events');
+                this.pastEventsContainer.append(newHeading);
                 if (response.length > 0){
-                    this.getPastEventsSpan.addClass('hidden');
-                    this.getPastEventsSpan.removeClass('blue-span');
-                    let newHeading = $('<h2/>').addClass('centered-text').html('Past Events');
-                    this.pastEventsContainer.append(newHeading);
                     let newSection = $('<div/>').addClass('generic-content');
                     this.pastEventsContainer.append(newSection);
                     for (let i = 0; i < response.length; i++){
@@ -92,6 +95,9 @@ class EventArchive{
                         let newLine = $('<div/>').addClass('orange-yellow-line-break-30');
                         newSection.append(newLine);
                     }
+                } else {
+                    let newP = $('<p/>').addClass('centered-text').html("We haven't had any events yet!");
+                    this.pastEventsContainer.append(newP);
                 }
             },
             failure: (response) => {
