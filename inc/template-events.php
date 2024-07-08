@@ -1,24 +1,16 @@
 <?php get_header();
-// upcoming events
-// --title (link to single event page)
-// --description excerpt
-// --whether it is members only
-
-
-// past events by year
-// --title (link to single event page)
-// --description excerpt
 ?><main>
     <div class="banner"><h1 class="centered-text">Events</h1></div>
     <br>
-    <button id="tomc-upcoming-events-button" class="purple-button">Upcoming Events</button>
+    <span id="tomc-upcoming-events-span" class="purple-span">Upcoming Events</span>
     <div id="tomc-upcoming-events-section">
 
     </div>
-    <button id="tomc-past-events-button" class="blue-button">Past Events</button>
+    <span id="tomc-past-events-span" class="blue-span">Past Events</span>
     <div id="tomc-past-events-section">
         
     </div>
+    <a class="no-decoration" href="<?php echo esc_url(site_url('/my-events'));?>"><span id="tomc-my-events-span" class="orange-span">My Events</span></a>
 </main>
 
 <?php get_footer();

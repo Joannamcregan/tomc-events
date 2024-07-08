@@ -2,16 +2,16 @@ import $ from 'jquery';
 
 class EventArchive{
     constructor(){
-        this.getUpcomingEventsButton = $('#tomc-upcoming-events-button');
-        this.getPastEventsButton = $('#tomc-past-events-button');
+        this.getUpcomingEventsSpan = $('#tomc-upcoming-events-span');
+        this.getPastEventsSpan = $('#tomc-past-events-span');
         this.upcomingEventsContainer = $('#tomc-upcoming-events-section');
         this.pastEventsContainer = $('#tomc-past-events-section');
         this.events();
     }
 
     events(){
-        this.getUpcomingEventsButton.on('click', this.getUpcomingEvents.bind(this));
-        this.getPastEventsButton.on('click', this.getPastEvents.bind(this));
+        this.getUpcomingEventsSpan.on('click', this.getUpcomingEvents.bind(this));
+        this.getPastEventsSpan.on('click', this.getPastEvents.bind(this));
     }
     
     getUpcomingEvents(){
@@ -23,8 +23,8 @@ class EventArchive{
             type: 'GET',
             success: (response) => {
                 if (response.length > 0){
-                    this.getUpcomingEventsButton.addClass('hidden');
-                    this.getUpcomingEventsButton.removeClass('purple-button');
+                    this.getUpcomingEventsSpan.addClass('hidden');
+                    this.getUpcomingEventsSpan.removeClass('purple-span');
                     let newHeading = $('<h2/>').addClass('centered-text').html('Upcoming Events');
                     this.upcomingEventsContainer.append(newHeading);
                     let newSection = $('<div/>').addClass('generic-content');
@@ -66,8 +66,8 @@ class EventArchive{
             type: 'GET',
             success: (response) => {
                 if (response.length > 0){
-                    this.getPastEventsButton.addClass('hidden');
-                    this.getPastEventsButton.removeClass('blue-button');
+                    this.getPastEventsSpan.addClass('hidden');
+                    this.getPastEventsSpan.removeClass('blue-span');
                     let newHeading = $('<h2/>').addClass('centered-text').html('Past Events');
                     this.pastEventsContainer.append(newHeading);
                     let newSection = $('<div/>').addClass('generic-content');

@@ -17,15 +17,15 @@ __webpack_require__.r(__webpack_exports__);
 
 class EventArchive {
   constructor() {
-    this.getUpcomingEventsButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-upcoming-events-button');
-    this.getPastEventsButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-past-events-button');
+    this.getUpcomingEventsSpan = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-upcoming-events-span');
+    this.getPastEventsSpan = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-past-events-span');
     this.upcomingEventsContainer = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-upcoming-events-section');
     this.pastEventsContainer = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-past-events-section');
     this.events();
   }
   events() {
-    this.getUpcomingEventsButton.on('click', this.getUpcomingEvents.bind(this));
-    this.getPastEventsButton.on('click', this.getPastEvents.bind(this));
+    this.getUpcomingEventsSpan.on('click', this.getUpcomingEvents.bind(this));
+    this.getPastEventsSpan.on('click', this.getPastEvents.bind(this));
   }
   getUpcomingEvents() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
@@ -36,8 +36,8 @@ class EventArchive {
       type: 'GET',
       success: response => {
         if (response.length > 0) {
-          this.getUpcomingEventsButton.addClass('hidden');
-          this.getUpcomingEventsButton.removeClass('purple-button');
+          this.getUpcomingEventsSpan.addClass('hidden');
+          this.getUpcomingEventsSpan.removeClass('purple-span');
           let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Upcoming Events');
           this.upcomingEventsContainer.append(newHeading);
           let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
@@ -78,8 +78,8 @@ class EventArchive {
       type: 'GET',
       success: response => {
         if (response.length > 0) {
-          this.getPastEventsButton.addClass('hidden');
-          this.getPastEventsButton.removeClass('blue-button');
+          this.getPastEventsSpan.addClass('hidden');
+          this.getPastEventsSpan.removeClass('blue-span');
           let newHeading = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html('Past Events');
           this.pastEventsContainer.append(newHeading);
           let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
