@@ -95,7 +95,7 @@ class TOMCEventsPlugin {
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             eventid bigint(20) unsigned NOT NULL,
             productid bigint(20) unsigned NOT NULL,
-            createddate datetime NULL,
+            createddate datetime NOT NULL,
             createdby bigint(20) unsigned NOT NULL,
             PRIMARY KEY  (id),
             FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id),
