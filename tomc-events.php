@@ -95,7 +95,7 @@ class TOMCEventsPlugin {
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             eventid bigint(20) unsigned NOT NULL,
             productid bigint(20) unsigned NOT NULL,
-            createddate datetime NOT NULL,
+            createddate datetime NULL,
             createdby bigint(20) unsigned NOT NULL,
             PRIMARY KEY  (id),
             FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id),
@@ -107,14 +107,16 @@ class TOMCEventsPlugin {
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             eventid bigint(20) unsigned NOT NULL,
             participantid bigint(20) unsigned NOT NULL,
-            signupdate datetime NOT NULL,
+            signupdate datetime NULL,
+            orderid bigint(20) unsigned NULL,
             didattend smallint(1) NULL,
             recordedby bigint(20) unsigned NOT NULL,
             recordeddate datetime NOT NULL,
             PRIMARY KEY  (id),
             FOREIGN KEY  (participantid) REFERENCES $this->users_table(id),
             FOREIGN KEY  (recordedby) REFERENCES $this->users_table(id),
-            FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id)
+            FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id),
+            FOREIGN KEY  (orderid) REFERENCES $this->posts_table(id)
         ) $this->charset;");
 
         //take care of event date dateAndTime, locationLink, and isMembersOnly with metadata
