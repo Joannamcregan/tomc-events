@@ -12,7 +12,7 @@ class MyEvents{
     }
     
     addNewEvent(){
-        console.log('adding a new event');
+        console.log('adding new event');
     }
 }
 

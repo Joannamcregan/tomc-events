@@ -2,6 +2,55 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/modules/Add-Event.js":
+/*!**********************************!*\
+  !*** ./src/modules/Add-Event.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+class AddEvent {
+  constructor() {
+    this.registerSpans = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tomc-event-register');
+    this.events();
+  }
+  events() {
+    this.registerSpans.on('click', this.register.bind(this));
+  }
+  register(e) {
+    let event = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).data('post');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+      },
+      url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/registerForEvent',
+      type: 'Post',
+      data: {
+        'event': event
+      },
+      success: response => {
+        if (response > 0) {
+          console.log(response);
+        } else {
+          console.log(response);
+        }
+      },
+      failure: response => {
+        console.log(response);
+      }
+    });
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddEvent);
+
+/***/ }),
+
 /***/ "./src/modules/Event-Archive.js":
 /*!**************************************!*\
   !*** ./src/modules/Event-Archive.js ***!
@@ -145,7 +194,7 @@ class MyEvents {
     this.addEventSpan.on('click', this.addNewEvent.bind(this));
   }
   addNewEvent() {
-    console.log('adding a new event');
+    console.log('adding new event');
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyEvents);
@@ -239,10 +288,13 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_My_Events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/My-Events */ "./src/modules/My-Events.js");
 /* harmony import */ var _modules_Event_Archive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Event-Archive */ "./src/modules/Event-Archive.js");
+/* harmony import */ var _modules_Add_Event__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/Add-Event */ "./src/modules/Add-Event.js");
 
 
-const myEvents = new _modules_My_Events__WEBPACK_IMPORTED_MODULE_0__["default"]();
+
+const tomcMyEvents = new _modules_My_Events__WEBPACK_IMPORTED_MODULE_0__["default"]();
 const tomcEventArchive = new _modules_Event_Archive__WEBPACK_IMPORTED_MODULE_1__["default"]();
+const tomcAddEvent = new _modules_Add_Event__WEBPACK_IMPORTED_MODULE_2__["default"]();
 })();
 
 /******/ })()

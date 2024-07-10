@@ -94,18 +94,18 @@ $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $users_table,
                                 if ($results[0]['seat_limit'] > $results[0]['signups']){
                                     if ($results[0]['members_only'] == 1){
                                         if (in_array( 'reader-member', (array) $user->roles ) || in_array( 'creator-member', (array) $user->roles ) || in_array( 'administrator', (array) $user->roles )){
-                                            ?><span class="purple-span tomc-event-register">Register Now</span>
+                                            ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
                                         <?php } else {
                                             ?><p class="centered-text">Before you can register for this event, you must <a href="<?php echo esc_url(site_url('/own'));?>">join our cooperative</a>.</p>
                                         <?php }
                                     } else {
-                                        ?><span class="purple-span tomc-event-register">Register Now</span>
+                                        ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
                                     <?php }
                                 } else {
                                     ?><p class="centered-text"><strong>Sorry, this event is full.</strong></p>
                                 <?php }
                             } else {
-                                ?><span class="purple-span tomc-event-register">Register Now</span>
+                                ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
                             <?php }
                         }
                     }
@@ -152,18 +152,18 @@ $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $users_table,
                                 if ($results[0]['seat_limit'] > $results[0]['signups']){
                                     if ($results[0]['members_only'] == 1){
                                         if (in_array( 'reader-member', (array) $user->roles ) || in_array( 'creator-member', (array) $user->roles ) || in_array( 'administrator', (array) $user->roles )){
-                                            ?><span class="purple-span tomc-event-register">Register Now</span>
+                                            ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
                                         <?php } else {
                                             ?><p class="centered-text">Before you can register for this event, you must <a href="<?php echo esc_url(site_url('/own'));?>">join our cooperative</a>.</p>
                                         <?php }
                                     } else {
-                                        ?><span class="purple-span tomc-event-register">Register Now</span>
+                                        ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
                                     <?php }
                                 } else {
                                     ?><p class="centered-text"><strong>Sorry, this event is full.</strong></p>
                                 <?php }
                             } else {
-                                ?><span class="purple-span tomc-event-register">Register Now</span>
+                                ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
                             <?php }
                         }
                     }

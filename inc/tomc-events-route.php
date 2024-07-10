@@ -15,6 +15,10 @@ function tomcEventsRegisterRoute() {
         'methods' => 'GET',
         'callback' => 'getUpcomingRegisteredEvents'
     ));
+    register_rest_route('tomcEvents/v1', 'registerForEvent', array(
+        'methods' => 'POST',
+        'callback' => 'getUpcomingRegisteredEvents'
+    ));
 }
 
 function getUpcomingEvents(){
@@ -85,5 +89,24 @@ function getUpcomingRegisteredEvents(){
     } else {
         wp_safe_redirect(site_url('/my-account'));
         return 'fail';
+    }
+
+    function registerForEvent($data){
+        if (is_user_logged_in() && (in_array( 'administrator', (array) $user->roles ) )){
+            $eventId = sanitize_text_field($data['event']);
+            global $wpdb;
+            $userId = get_current_user_id();
+            $event_signups_table = $wpdb->prefix . "tomc_event_signups";
+            $newSignup = [];
+            $newSignup['eventId'] = $eventId;
+            $newSignup['participantid'] = $userId;
+            $newSignup['signupdate'] = date('Y-m-d H:i:s');
+            $wpdb->insert($event_signups_table, $newSignup);
+            $newSignupId = $wpdb->insert_id;
+            return $newSignupId;
+        } else {
+            wp_safe_redirect(site_url('/my-account'));
+            return 'fail';
+        }
     }
 }
