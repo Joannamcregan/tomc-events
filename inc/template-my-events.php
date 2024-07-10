@@ -14,11 +14,11 @@
     <div id="tomc-registered-events-section">
 
     </div>
-    <span class="orange-span" id="upcoming-registered-events-span">Manage Upcoming Events</span>
+    <span class="orange-span" id="manage-upcoming-events-span">Manage Upcoming Events</span>
     <div id="tomc-manage-upcoming-events-section">
 
     </div>
-    <span class="blue-span" id="upcoming-registered-events-span">Manage Past Events</span>
+    <span class="blue-span" id="manage-past-events-span">Manage Past Events</span>
     <div id="tomc-manage-past-events-section">
 
     </div>

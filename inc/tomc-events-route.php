@@ -66,25 +66,43 @@ function getPastEvents(){
 
 function getUpcomingRegisteredEvents(){
     $user = wp_get_current_user();
-    if (is_user_logged_in() && (in_array( 'administrator', (array) $user->roles ) )){
+    if (is_user_logged_in()){
         global $wpdb;
         $userId = get_current_user_id();
         $posts_table = $wpdb->prefix . "posts";
         $postmeta_table = $wpdb->prefix . "postmeta";
         $event_signups_table = $wpdb->prefix . "tomc_event_signups";
-        $query = 'select posts.id as post_url, posts.post_title, posts.post_content, timestring.meta_value as time_string, membersonly.meta_value as members_only 
+        $event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
+        $lookup_table = $wpdb->prefix . "wc_order_product_lookup";
+        $order_items_table = $wpdb->prefix . "woocommerce_order_items";
+        $query = 'select posts.id as post_url, posts.post_title, posts.post_content, timestring.meta_value as time_string
         from %i posts
         join %i eventdate on posts.id = eventdate.post_id
         and eventdate.meta_key = "_tomc_event_date"
         join %i timestring on posts.id = timestring.post_id
         and timestring.meta_key = "_tomc_event_time_string"
-        join %i membersonly on posts.id = membersonly.post_id
-        and membersonly.meta_key = "_tomc_event_is_members_only"
         join %i signups on posts.id = signups.eventid
         and signups.participantid = %d
         where posts.post_type = "event"
+        and eventdate.meta_value >= now()
+        union
+        select posts.id as post_url, posts.post_title, posts.post_content, timestring.meta_value as time_string
+        from %i posts
+        join %i eventdate on posts.id = eventdate.post_id
+        and eventdate.meta_key = "_tomc_event_date"
+        join %i timestring on posts.id = timestring.post_id
+        and timestring.meta_key = "_tomc_event_time_string"
+        join %i eventtickets on eventtickets.eventId = posts.id
+        join %i lookup on eventtickets.productId = lookup.product_id
+        join %i orderitems on lookup.order_id = orderitems.order_id
+        join %i orders on orderitems.order_id = orders.id
+        and orders.post_author = %d
+        where posts.post_type = "event"
         and eventdate.meta_value >= now()';
-        $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $postmeta_table, $postmeta_table, $postmeta_table, $event_signups_table, $userId), ARRAY_A);
+        $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $postmeta_table, $postmeta_table, $event_signups_table, $userId, $posts_table, $postmeta_table, $postmeta_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table, $userId), ARRAY_A);
+        for($i = 0; $i < count($results); $i++){
+            $results[$i]['post_url'] = get_permalink($results[$i]['post_url']);
+        }
         return $results;
     } else {
         wp_safe_redirect(site_url('/my-account'));
