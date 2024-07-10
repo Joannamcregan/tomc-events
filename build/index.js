@@ -24,15 +24,14 @@ class AddEvent {
     this.registerSpans.on('click', this.register.bind(this));
   }
   register(e) {
-    let event = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).data('post');
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
       beforeSend: xhr => {
         xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
       },
       url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/registerForEvent',
-      type: 'Post',
+      type: 'POST',
       data: {
-        'event': event
+        'event': jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).data('post')
       },
       success: response => {
         if (response > 0) {

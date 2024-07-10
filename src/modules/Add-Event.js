@@ -11,15 +11,14 @@ class AddEvent{
     }
 
     register(e){
-        let event = $(e.target).data('post');
         $.ajax({
             beforeSend: (xhr) => {
                 xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
             },
             url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/registerForEvent',
-            type: 'Post',
+            type: 'POST',
             data: {
-                'event' : event
+                'event' : $(e.target).data('post')
             },
             success: (response) => {
                 if (response > 0){
