@@ -35,9 +35,11 @@ class AddEvent {
       },
       success: response => {
         if (response > 0) {
-          console.log(response);
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parent().children('.tomc-registration-success').removeClass('hidden');
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parent().children('.tomc-registration-fail').addClass('hidden');
         } else {
-          console.log(response);
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parent().children('.tomc-registration-success').addClass('hidden');
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parent().children('.tomc-registration-fail').removeClass('hidden');
         }
       },
       failure: response => {

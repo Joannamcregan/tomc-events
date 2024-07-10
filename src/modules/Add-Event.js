@@ -22,9 +22,11 @@ class AddEvent{
             },
             success: (response) => {
                 if (response > 0){
-                    console.log(response);
+                    $(e.target).parent().children('.tomc-registration-success').removeClass('hidden');
+                    $(e.target).parent().children('.tomc-registration-fail').addClass('hidden');
                 } else {
-                    console.log(response);
+                    $(e.target).parent().children('.tomc-registration-success').addClass('hidden');
+                    $(e.target).parent().children('.tomc-registration-fail').removeClass('hidden');
                 }
             },
             failure: (response) => {
