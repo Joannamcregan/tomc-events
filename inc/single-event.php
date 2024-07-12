@@ -1,16 +1,5 @@
 <?php wp_reset_postdata();
 get_header();
-// title (post_title)
-
-// date and time (post meta)
-
-// whether members only
-
-// description (post_content)
-
-// event link (post meta)
-
-// posted by (link to user page)
 $postId = get_the_ID();
 global $wpdb;
 $posts_table = $wpdb->prefix . "posts";

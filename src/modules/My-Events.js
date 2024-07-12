@@ -20,7 +20,7 @@ class MyEvents{
     }
     
     addNewEvent(){
-        console.log('adding new event');
+        this.addEventSection.removeClass('hidden');
     }
 
     getRegisteredEvents(){

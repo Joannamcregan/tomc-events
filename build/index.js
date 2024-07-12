@@ -203,7 +203,7 @@ class MyEvents {
     this.upcomingRegisteredEventsSpan.on('click', this.getRegisteredEvents.bind(this));
   }
   addNewEvent() {
-    console.log('adding new event');
+    this.addEventSection.removeClass('hidden');
   }
   getRegisteredEvents() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({

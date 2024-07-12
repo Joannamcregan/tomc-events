@@ -1,76 +1,35 @@
-.event-summary p {
-    padding-top: 0;
-}
-.event-summary {
-    margin-bottom: 0;
-    margin-top: 20px;
-}
-.tomc-event-presenter-pic{
-    margin-top: 10px;
-}
-.tomc-event-presenter-pic img{
-    display: block;
-    margin: 0px auto 10px auto;
-    border-radius: 50%;
-}
-.tomc-event-presenter-bio{
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: solid #e44e2d 2px;
-}
-#tomc-event-presenter-select, #tomc-event-attendance-select{
-    text-align: center;
-    border-radius: 20px;
-    margin: 0px 10px 30px 10px;
-}
-#tomc-event-attendance-add-presenter, #tomc-event-attendance-add-user{
-    background-color: #0c6980;
-    color: white;
-    border-radius: 15px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin: 0px 10px 30px 10px;
-    text-align: center;
-}
-.tomc--manage-event{
-    background-color: #0c6980;
-    color: white;
-    border-radius: 15px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin: 10px auto 30px auto;
-    display: block;
-    text-align: center;
-}
-#tomc--save-new-event, #tomc--save-participant-record{
-    background-color: #4c0548;
-    color: white;
-    border-radius: 15px;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin: 0px 10px 30px 10px;
-    text-align: center;
-}
-#tomc--cancel-new-event, #tomc--cancel-participant-record{
-    background-color: #893e43;
-    color: white;
-    border-radius: 15px;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin: 0px 10px 30px 10px;
-    text-align: center;
-}
-.tomc-events-users-container{
-    min-height: 100px;
-    width: 90%;
-    border: solid #0c6980 2px;
-    border-radius: 15px;
+#tomc-new-event-section input[type='text']{
+    width: 300px;
+    border-radius: 10px;
     margin: 10px auto;
+    text-align: center;
 }
-#tomc-events-time-entered{
-    width: 250px;
-    height: 40px;
-    border: solid #0c6980 2px;
-    border-radius: 15px;
+#tomc-new-event-section input[type="date"]{
+    width: 200px;
+    border-radius: 10px;
+    margin: 10px auto;
+    text-align: center;
+}
+#tomc-new-event-section input[type="time"]{
+    width: 200px;
+    border-radius: 10px;
+    margin: 10px auto;
+    text-align: center;
+}
+#tomc-new-event-section textarea{
+    width: 300px;
+    height: 150px;
+    border-radius: 10px;
+    margin: 10px auto;
+    text-align: center;
+}
+#tomc-new-event-section input[type="number"]{
+    width: 200px;
+    border-radius: 10px;
+    margin: 10px auto;
+    text-align: center;
+}
+.tomc-event-form-radio-options{
+    width: fit-content;
     margin: 10px auto;
 }
