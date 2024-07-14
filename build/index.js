@@ -196,14 +196,94 @@ class MyEvents {
     this.manageUpcomingEventsSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-manage-upcoming-events-section');
     this.managePastEventsSpan = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#manage-past-events-span');
     this.managePastEventsSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-manage-past-events-section');
+    this.freeOption = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-free-option');
+    this.ticketOption = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-ticket-option');
+    this.ticketSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-ticket-section');
+    this.ticketProductSelect = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-ticket-product');
+    this.eventTitle = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-title');
+    this.eventDate = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-date');
+    this.eventTime = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-time');
+    this.timeZoneOptions = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tomc-event-time-zone-option');
+    this.eventDescription = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-description');
+    this.membersOnlyOption = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-members-only-option');
+    this.openOption = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-open-option');
+    this.limitSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-limit-section');
+    this.limitedOption = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-limited-option');
+    this.unlimitedOption = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-unlimited-option');
+    this.eventLimit = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-limit');
+    this.ticketLimitReminder = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-limit-ticket-reminder');
     this.events();
+    this.requiresTicket = false;
+    this.isMembersOnly = false;
+    this.chosenTimeZone = '';
+    this.isLimited = false;
   }
   events() {
     this.addEventSpan.on('click', this.addNewEvent.bind(this));
     this.upcomingRegisteredEventsSpan.on('click', this.getRegisteredEvents.bind(this));
+    this.freeOption.on('click', this.selectFreeOption.bind(this));
+    this.ticketOption.on('click', this.selectTicketOption.bind(this));
+    this.membersOnlyOption.on('click', this.selectMembersOnlyOption.bind(this));
+    this.openOption.on('click', this.selectOpenOption.bind(this));
+    this.timeZoneOptions.on('click', this.selectTimeZone.bind(this));
+    this.unlimitedOption.on('click', this.selectUnlimitedOption.bind(this));
+    this.limitedOption.on('click', this.selectLimitedOption.bind(this));
   }
   addNewEvent() {
     this.addEventSection.removeClass('hidden');
+  }
+  selectFreeOption() {
+    this.ticketOption.removeClass('tomc-events--option-selected');
+    this.freeOption.addClass('tomc-events--option-selected');
+    this.freeOption.attr('aria-label', 'this option is not selected');
+    this.ticketOption.attr('aria-label', 'this option is selected');
+    this.requiresTicket = true;
+    this.ticketSection.addClass('hidden');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-limit-ticket-reminder').addClass('hidden');
+  }
+  selectTicketOption() {
+    this.freeOption.removeClass('tomc-events--option-selected');
+    this.ticketOption.addClass('tomc-events--option-selected');
+    this.ticketOption.attr('aria-label', 'this option is not selected');
+    this.freeOption.attr('aria-label', 'this option is selected');
+    this.requiresTicket = false;
+    this.ticketSection.removeClass('hidden');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-limit-ticket-reminder').removeClass('hidden');
+  }
+  selectUnlimitedOption() {
+    this.limitedOption.removeClass('tomc-events--option-selected');
+    this.unlimitedOption.addClass('tomc-events--option-selected');
+    this.unlimitedOption.attr('aria-label', 'this option is not selected');
+    this.limitedOption.attr('aria-label', 'this option is selected');
+    this.isLimited = false;
+    this.limitSection.addClass('hidden');
+  }
+  selectLimitedOption() {
+    this.unlimitedOption.removeClass('tomc-events--option-selected');
+    this.limitedOption.addClass('tomc-events--option-selected');
+    this.limitedOption.attr('aria-label', 'this option is not selected');
+    this.unlimitedOption.attr('aria-label', 'this option is selected');
+    this.isLimited = true;
+    this.limitSection.removeClass('hidden');
+  }
+  selectMembersOnlyOption() {
+    this.openOption.removeClass('tomc-events--option-selected');
+    this.membersOnlyOption.addClass('tomc-events--option-selected');
+    this.openOption.attr('aria-label', 'this option is not selected');
+    this.membersOnlyOption.attr('aria-label', 'this option is selected');
+    this.isMembersOnly = true;
+  }
+  selectOpenOption() {
+    this.membersOnlyOption.removeClass('tomc-events--option-selected');
+    this.openOption.addClass('tomc-events--option-selected');
+    this.membersOnlyOption.attr('aria-label', 'this option is not selected');
+    this.openOption.attr('aria-label', 'this option is selected');
+    this.isMembersOnly = true;
+  }
+  selectTimeZone(e) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tomc-event-time-zone-option').removeClass('tomc-events--option-selected');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).addClass('tomc-events--option-selected');
+    this.chosenTimeZone = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).attr('html');
   }
   getRegisteredEvents() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
