@@ -19,6 +19,10 @@ function tomcEventsRegisterRoute() {
         'methods' => 'POST',
         'callback' => 'registerForEvent'
     ));
+    register_rest_route('tomcEvents/v1', 'submitNewEvent', array(
+        'methods' => 'POST',
+        'callback' => 'submitNewEvent'
+    ));
 }
 
 function getUpcomingEvents(){
@@ -123,6 +127,38 @@ function registerForEvent($data){
         $wpdb->insert($event_signups_table, $newSignup);
         $newSignupId = $wpdb->insert_id;
         return $newSignupId;
+    } else {
+        wp_safe_redirect(site_url('/my-account'));
+        return 'fail';
+    }
+}
+
+function submitNewEvent($data){
+    $title = sanitize_text_field($data['title']);
+    $product = sanitize_text_field($data['product']);
+    $date = sanitize_text_field($data['date']);
+    $time = sanitize_text_field($data['time']);
+    $description = sanitize_text_field($data['description']);
+    $isMembersOnly = sanitize_text_field($data['isMembersOnly']);
+    $isLimited = sanitize_text_field($data['isLimited']);
+    $requiresTicket = sanitize_text_field($data['requiresTicket']);
+    if (is_user_logged_in()){
+        global $wpdb;
+        $posts_table = $wpdb->prefix . "posts";
+        $userId = get_current_user_id();
+        $newEvent = [];
+        $newEvent['post_title'] = $title;
+        $newEvent['post_content'] = $description;
+        $newEvent['post_author'] = $userId;
+        $newEvent['post_status'] = 'draft';
+        $newEvent['post_date'] = date('Y-m-d H:i:s');
+        $newEvent['post_type'] = 'event';
+        $wpdb->insert($posts_table, $newEvent);
+        $newEventId = $wpdb->insert_id;
+        if ($newEventId > 0){
+            return $newEventId;
+        }
+        return $newEventId;
     } else {
         wp_safe_redirect(site_url('/my-account'));
         return 'fail';

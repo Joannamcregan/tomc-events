@@ -27,6 +27,7 @@ class MyEvents{
         this.unlimitedOption = $('#tomc-new-event-unlimited-option');
         this.eventLimit = $('#tomc-event-limit');
         this.ticketLimitReminder = $('#tomc-event-limit-ticket-reminder');
+        this.submitButton = $('#tomc-new-event-submit');
         this.events();
         this.requiresTicket = false;
         this.isMembersOnly = false;
@@ -44,11 +45,78 @@ class MyEvents{
         this.timeZoneOptions.on('click', this.selectTimeZone.bind(this));
         this.unlimitedOption.on('click', this.selectUnlimitedOption.bind(this));
         this.limitedOption.on('click', this.selectLimitedOption.bind(this));
+        this.submitButton.on('click', this.submitNewEvent.bind(this));
     }
     
     addNewEvent(){
         this.addEventSection.removeClass('hidden');
-    }    
+    }   
+    
+    submitNewEvent(){
+        if (this.eventTitle.val() != '' && (this.ticketProductSelect.val() != 0 || this.requiresTicket == false) && this.eventDate.val() != '' && this.eventTime.val() != '' && this.eventDescription.val() != '' && (this.eventLimit.val() != '' || this.isLimited == false)){
+            $('#tomc-events-no-product-error').addClass('hidden');
+            $('#tomc-events-no-title-error').addClass('hidden');
+            $('#tomc-events-no-date-error').addClass('hidden');
+            $('#tomc-events-no-time-error').addClass('hidden');
+            $('#tomc-events-no-description-error').addClass('hidden');
+            $('#tomc-events-no-limit-error').addClass('hidden');
+            $.ajax({
+                beforeSend: (xhr) => {
+                    xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+                },
+                url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/submitNewEvent',
+                type: 'POST',
+                data: {
+                    'title' : this.eventTitle.val().substring(0, 200),
+                    'product' : this.ticketProductSelect.val(),
+                    'date' : this.eventDate.val(),
+                    'time' : this.eventTime.val(),
+                    'description' : this.eventDescription.val(),
+                    'limit' : this.eventLimit.val(),
+                    'requiresTicket' : this.requiresTicket,
+                    'isLimited' : this.isLimited,
+                    'isMembersOnly' : this.isMembersOnly
+                },
+                success: (response) => {
+                    console.log(response);
+                },
+                error: (response) => {
+                    console.log(response);
+                }
+            });
+        } else {
+            if (this.ticketProductSelect.val() == ''){
+                $('#tomc-events-no-product-error').removeClass('hidden');
+            } else {
+                $('#tomc-events-no-product-error').addClass('hidden');
+            }
+            if (this.eventTitle.val() == ''){
+                $('#tomc-events-no-title-error').removeClass('hidden');
+            } else {
+                $('#tomc-events-no-title-error').addClass('hidden');
+            }
+            if (this.eventDate.val() == ''){
+                $('#tomc-events-no-date-error').removeClass('hidden');
+            } else {
+                $('#tomc-events-no-date-error').addClass('hidden');
+            }
+            if (this.eventTime.val() == ''){
+                $('#tomc-events-no-time-error').removeClass('hidden');
+            } else {
+                $('#tomc-events-no-time-error').addClass('hidden');
+            }
+            if (this.eventDescription.val() == ''){
+                $('#tomc-events-no-description-error').removeClass('hidden');
+            } else {
+                $('#tomc-events-no-description-error').addClass('hidden');
+            }
+            if (this.eventLimit.val() == 0 && this.isLimited){
+                $('#tomc-events-no-limit-error').removeClass('hidden');
+            } else {
+                $('#tomc-events-no-limit-error').addClass('hidden');
+            }
+        }
+    }
 
     selectFreeOption(){
         this.ticketOption.removeClass('tomc-events--option-selected');

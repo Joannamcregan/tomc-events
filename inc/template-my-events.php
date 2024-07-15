@@ -23,8 +23,6 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
         </div>
         <span class="purple-span" id="tomc-add-event-span">Add New Event</span>
         <div id="tomc-new-event-section" class="hidden">
-            <p class="centered-text hidden" id="tomc-submit-event-success">Thank you, your event has been submitted to admin for approval.</p>
-            <p class="centered-text red-text hidden" id="tomc-submit-event-failure">Something went wrong. Please try again.</p>
             <label for="tomc-event-free-or-paid" class="centered-text block">Is this event free, or does it require a ticket?</label>
             <div class="tomc-new-event-option-group">
                 <span class="tomc-events--option-span tomc-events--option-selected" aria-label="this option is selected" id="tomc-event-free-option">free</span>
@@ -71,6 +69,12 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
                 <span class="tomc-event-time-zone-option tomc-events--option-span" aria-label="this option is not selected">Alaska Time</span>
                 <span class="tomc-event-time-zone-option tomc-events--option-span tomc-events--option-selected" aria-label="this option is selected" id="tomc-new-event-hawaii">Hawaii Time</span>
             </div>
+            <p class="centered-text">Where will your event be hosted?</p>
+            <div class="tomc-new-event-option-group">
+                <span class="tomc-events--option-span tomc-events--option-selected" aria-label="this option is selected" id="tomc-event-bridge-option">TOMC's virtual room on CommunityBridge</span>
+                <span class="tomc-events--option-span" aria-label="this option is not selected" id="tomc-event-outside-option">another platform</span>
+            </div>
+            <p class="centered-text"><em><a href="https://communitybridge.com" target="_blank">CommunityBridge</a> is co-op that utilizes BigBlueButton technology to power virtual meeting rooms.</em></p>
             <label for="tomc-new-event-description" class="centered-text block">Describe your event and the people behind it.</label>
             <textarea id="tomc-new-event-description" class="block"></textarea>
             <label for="tomc-event-members-or-open" class="centered-text block">Is this event members-only, or is it open to anyone?</label>
@@ -88,7 +92,15 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
                 <input type="number" name="tomc-event-limit" class="block" id="tomc-event-limit"></input>
                 <p id="tomc-event-limit-ticket-reminder" class="centered-text hidden">Note: please make sure the product listing for your ticket also reflects this limit.</p>
             </div>            
-            <button class="purple-button">submit for review</button>
+            <p class="centered-text hidden" id="tomc-submit-event-success">Thank you, your event has been submitted to admin for approval.</p>
+            <p class="centered-text red-text hidden" id="tomc-submit-event-failure">Something went wrong. Please try again.</p>
+            <p class="centered-text red-text hidden" id="tomc-events-no-product-error">You must select the product listing for your event's tickets.</p>
+            <p class="centered-text red-text hidden" id="tomc-events-no-title-error">You must enter your event's title.</p>
+            <p class="centered-text red-text hidden" id="tomc-events-no-date-error">You must enter your event's date.</p>
+            <p class="centered-text red-text hidden" id="tomc-events-no-time-error">You must enter your event's time.</p>
+            <p class="centered-text red-text hidden" id="tomc-events-no-description-error">You must enter your event's description.</p>
+            <p class="centered-text red-text hidden" id="tomc-events-no-limit-error">You must enter your event's attendance limit.</p>
+            <button class="purple-button" id="tomc-new-event-submit">submit for review</button>
         </div>
     <?php } else {
         ?><div class="generic-content half-screen">

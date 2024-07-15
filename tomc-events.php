@@ -24,6 +24,7 @@ class TOMCEventsPlugin {
         add_action('wp_enqueue_scripts', array($this, 'pluginFiles'));
         add_filter('template_include', array($this, 'loadTemplate'), 99);
         add_action('init', array($this, 'event_custom_post_types'));
+        add_action('add_meta_boxes', array($this, 'addEventMetaBoxes'));
     }
 
     function event_custom_post_types() {
@@ -44,6 +45,70 @@ class TOMCEventsPlugin {
             ),
             'menu_icon' => 'dashicons-calendar'
         ));
+    }
+
+    function addEventMetaBoxes(){
+        add_meta_box('event_time', 'Event Time', array($this, 'displayEventTime'), 'event', 'normal', 'high');
+        add_meta_box('event_platform', 'Event Platform', array($this, 'displayEventPlatform'), 'event', 'normal', 'high');
+        add_meta_box('event_is_members_only', 'Is the event members only?', array($this, 'displayEventMembersOnly'), 'event', 'normal', 'high');
+        add_meta_box('event_requires_ticket', 'Does the event require a ticket?', array($this, 'displayEventRequiresTicket'), 'event', 'normal', 'high');
+        add_meta_box('event_has_limit', 'Does the event have a limit on the number of people that can attend?', array($this, 'displayEventHasLimit'), 'event', 'normal', 'high');
+    }
+
+    function displayEventTime(){
+        global $post;
+        echo get_post_meta($post->ID, '_tomc_event_time_string', true) ? get_post_meta($post->ID, '_tomc_event_time_string', true) : 'No time has been entered for this event.';
+    }
+
+    function displayEventPlatform(){
+        global $post;
+        echo get_post_meta($post->ID, '_tomc_event_platform', true) ? get_post_meta($post->ID, '_tomc_event_platform', true) : 'The event organizer has not indicated where they plan to host this event.';
+    }
+
+    function displayEventMembersOnly(){
+        global $post;
+        if (get_post_meta($post->ID, '_tomc_event_is_members_only', true)){
+            if (get_post_meta($post->ID, '_tomc_event_is_members_only', true) == 1){
+                echo 'yes';
+            } else if (get_post_meta($post->ID, '_tomc_event_is_members_only', true) == 0){
+                echo 'no';
+            }
+            else {
+                echo 'The event organizer has not indicated whether this event is members only or open to everyone.';
+            }
+        } else {
+            echo 'The event organizer has not indicated whether this event is members only or open to everyone.';
+        }
+    }
+
+    function displayEventRequiresTicket(){
+        global $post;
+        global $wpdb;
+        $event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
+        if (get_post_meta($post->ID, '_tomc_event_requires_ticket', true)){
+            if (get_post_meta($post->ID, '_tomc_event_requires_ticket', true) == 1){
+                echo 'yes';
+                $query = 'select productid from %i where eventid = %d order by createddate desc limit 1;';
+                $results = $wpdb->get_results($wpdb->prepare($query, $event_tickets_table, $post->ID), ARRAY_A);
+                if ($results){
+                    echo get_the_title($results[0]['productid']);
+                } else {
+                    echo 'The event organizer has not indicated which product listing they will be using to sell tickets.';
+                }
+            } else if (get_post_meta($post->ID, '_tomc_event_requires_ticket', true) == 0){
+                echo 'no';
+            }
+            else {
+                echo 'The event organizer has not indicated whether this event is free or requires a ticket.';
+            }
+        } else {
+            echo 'The event organizer has not indicated whether this event is free or requires a ticket.';
+        }
+    }
+
+    function displayEventHasLimit(){
+        global $post;
+        echo get_post_meta($post->ID, '_tomc_event_limit', true) ? 'Yes, the limit is ' . get_post_meta($post->ID, '_tomc_event_limit', true) . '.' : 'No limit has been given.';
     }
 
     function registerScripts(){
