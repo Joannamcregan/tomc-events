@@ -23,6 +23,8 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
         </div>
         <span class="purple-span" id="tomc-add-event-span">Add New Event</span>
         <div id="tomc-new-event-section" class="hidden">
+            <h2 class="centered-text">Submit a New Event</h2>
+            <p class="centered-text"><em>All events must be approved by admin before they will be shown to the community.</em></p>
             <label for="tomc-event-free-or-paid" class="centered-text block">Is this event free, or does it require a ticket?</label>
             <div class="tomc-new-event-option-group">
                 <span class="tomc-events--option-span tomc-events--option-selected" aria-label="this option is selected" id="tomc-event-free-option">free</span>

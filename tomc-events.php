@@ -91,7 +91,7 @@ class TOMCEventsPlugin {
                 $query = 'select productid from %i where eventid = %d order by createddate desc limit 1;';
                 $results = $wpdb->get_results($wpdb->prepare($query, $event_tickets_table, $post->ID), ARRAY_A);
                 if ($results){
-                    echo get_the_title($results[0]['productid']);
+                    echo ' and the product is ' . get_the_title($results[0]['productid']);
                 } else {
                     echo 'The event organizer has not indicated which product listing they will be using to sell tickets.';
                 }

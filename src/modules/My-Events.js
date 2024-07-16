@@ -26,6 +26,8 @@ class MyEvents{
         this.limitedOption = $('#tomc-new-event-limited-option');
         this.unlimitedOption = $('#tomc-new-event-unlimited-option');
         this.eventLimit = $('#tomc-event-limit');
+        this.eventBridgeOption = $('#tomc-event-bridge-option');
+        this.otherPlatformOption = $('#tomc-event-outside-option');
         this.ticketLimitReminder = $('#tomc-event-limit-ticket-reminder');
         this.submitButton = $('#tomc-new-event-submit');
         this.events();
@@ -33,6 +35,7 @@ class MyEvents{
         this.isMembersOnly = false;
         this.chosenTimeZone = '';
         this.isLimited = false;
+        this.isBridge = true;
     }
 
     events(){
@@ -45,11 +48,15 @@ class MyEvents{
         this.timeZoneOptions.on('click', this.selectTimeZone.bind(this));
         this.unlimitedOption.on('click', this.selectUnlimitedOption.bind(this));
         this.limitedOption.on('click', this.selectLimitedOption.bind(this));
+        this.eventBridgeOption.on('click', this.selectBridgeOption.bind(this));
+        this.otherPlatformOption.on('click', this.selectOtherPlatformOption.bind(this));
         this.submitButton.on('click', this.submitNewEvent.bind(this));
     }
     
     addNewEvent(){
-        this.addEventSection.removeClass('hidden');
+        this.addEventSection.removeClass('hidden');        
+        this.addEventSpan.addClass('hidden');
+        this.addEventSpan.removeClass('purple-span');
     }   
     
     submitNewEvent(){
@@ -71,17 +78,24 @@ class MyEvents{
                     'product' : this.ticketProductSelect.val(),
                     'date' : this.eventDate.val(),
                     'time' : this.eventTime.val(),
+                    'timezone' : this.chosenTimeZone,
                     'description' : this.eventDescription.val(),
                     'limit' : this.eventLimit.val(),
                     'requiresTicket' : this.requiresTicket,
                     'isLimited' : this.isLimited,
-                    'isMembersOnly' : this.isMembersOnly
+                    'isMembersOnly' : this.isMembersOnly,
+                    'isOnBridge' : this.isBridge
                 },
                 success: (response) => {
-                    console.log(response);
+                    if (response > 0){
+                        $("#tomc-submit-event-success").removeClass('hidden');
+                        setTimeout(() => location.reload(true), 3000);
+                    } else {
+                        $("#tomc-submit-event-failure").removeClass('hidden');
+                    }
                 },
                 error: (response) => {
-                    console.log(response);
+                    $("#tomc-submit-event-failure").removeClass('hidden');
                 }
             });
         } else {
@@ -169,7 +183,23 @@ class MyEvents{
         this.openOption.addClass('tomc-events--option-selected');
         this.membersOnlyOption.attr('aria-label', 'this option is not selected');
         this.openOption.attr('aria-label', 'this option is selected');
-        this.isMembersOnly = true;
+        this.isMembersOnly = false;
+    }
+
+    selectBridgeOption(){
+        this.otherPlatformOption.removeClass('tomc-events--option-selected');
+        this.eventBridgeOption.addClass('tomc-events--option-selected');
+        this.otherPlatformOption.attr('aria-label', 'this option is not selected');
+        this.eventBridgeOption.attr('aria-label', 'this option is selected');
+        this.isBridge = true;
+    }
+
+    selectOtherPlatformOption(){
+        this.eventBridgeOption.removeClass('tomc-events--option-selected');
+        this.otherPlatformOption.addClass('tomc-events--option-selected');
+        this.eventBridgeOption.attr('aria-label', 'this option is not selected');
+        this.otherPlatformOption.attr('aria-label', 'this option is selected');
+        this.isMembersOnly = false;
     }
 
     selectTimeZone(e){
