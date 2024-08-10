@@ -79,7 +79,7 @@ function getUpcomingEventsByOrganizer(){
     if (is_user_logged_in()){
         $posts_table = $wpdb->prefix . "posts";
         $postmeta_table = $wpdb->prefix . "postmeta";
-        $query = 'select posts.id as post_url, posts.post_title, timestring.meta_value as time_string, posts.post_status
+        $query = 'select posts.post_title, timestring.meta_value as time_string, posts.post_status, posts.post_content
         from %i posts
         join %i eventdate on posts.id = eventdate.post_id
         and eventdate.meta_key = "_tomc_event_date"
@@ -88,11 +88,9 @@ function getUpcomingEventsByOrganizer(){
         where posts.post_type = "event"
         and eventdate.meta_value >= now()
         and posts.post_author = %d';
-        $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $postmeta_table, $postmeta_table, $postmeta_table, $userId), ARRAY_A);
-        for($i = 0; $i < count($results); $i++){
-            $results[$i]['post_url'] = get_permalink($results[$i]['post_url']);
-        }
+        $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $postmeta_table, $postmeta_table, $userId), ARRAY_A);
         return $results;
+        // return $wpdb->prepare($query, $posts_table, $postmeta_table, $postmeta_table, $userId);
     } else {
         wp_safe_redirect(site_url('/my-account'));
         return 'fail';

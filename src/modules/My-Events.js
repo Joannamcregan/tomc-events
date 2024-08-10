@@ -2,7 +2,6 @@ import $ from 'jquery';
 
 class MyEvents{
     constructor(){
-        //Add a new event---------------------------------------------------------------------------
         this.addEventSpan = $('#tomc-add-event-span');
         this.addEventSection = $('#tomc-new-event-section');
         this.upcomingRegisteredEventsSpan = $('#upcoming-registered-events-span');
@@ -39,6 +38,7 @@ class MyEvents{
     }
 
     events(){
+        this.manageUpcomingEventsSpan.on('click', this.manageUpcomingOrganizedEvents.bind(this));
         this.addEventSpan.on('click', this.addNewEvent.bind(this));
         this.upcomingRegisteredEventsSpan.on('click', this.getRegisteredEvents.bind(this));
         this.freeOption.on('click', this.selectFreeOption.bind(this));
@@ -53,6 +53,51 @@ class MyEvents{
         this.submitButton.on('click', this.submitNewEvent.bind(this));
     }
     
+    manageUpcomingOrganizedEvents(){
+        let h2 = $('<h2/>').addClass('centered-text').html("Upcoming Events I'm Organizing");
+        this.manageUpcomingEventsSection.append(h2);
+        $.ajax({
+            beforeSend: (xhr) => {
+                xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+            },
+            url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEventsByOrganizer',
+            type: 'GET',
+            success: (response) => {
+                console.log(response);
+                this.manageUpcomingEventsSpan.addClass('hidden');
+                this.manageUpcomingEventsSpan.removeClass('purple-span');
+                if (response){
+                    for (let i = 0; i < response.length; i++){
+                        let h3 = $('<h3/>').html(response[i]['post_title']).addClass('centered-text');
+                        this.manageUpcomingEventsSection.append(h3);
+                        let p = $('<p/>').addClass('centered-text');
+                        let strong = '';
+                        if (response[i]['post_status'] == 'publish'){
+                            strong = $('<strong/>').html('Approved by admin');
+                        } else if (response[i]['post_status'] == 'draft'){
+                            strong = $('<strong/>').html('Awaiting admin approval');
+                        } else {
+                            strong = $('<strong/>').html('Not approved by admin');
+                        }
+                        p.append(strong);
+                        this.manageUpcomingEventsSection.append(p);
+                        p = $('<p/>').addClass('centered-text');
+                        let em = $('<em/>').html(response[i]['time_string']);
+                        p.append(em);
+                        this.manageUpcomingEventsSection.append(p);
+                        p = $('<p/>').html(response[i]['post_content']).addClass('centered-text');
+                        this.manageUpcomingEventsSection.append(p);
+                    }
+                }
+            },
+            error: (response) => {
+                console.log(response);
+            }
+        });
+        this.manageUpcomingEventsSpan.addClass('hidden');
+        this.manageUpcomingEventsSpan.removeClass('orange-span');
+    }
+
     addNewEvent(){
         this.addEventSection.removeClass('hidden');        
         this.addEventSpan.addClass('hidden');

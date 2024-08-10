@@ -48,11 +48,25 @@ class TOMCEventsPlugin {
     }
 
     function addEventMetaBoxes(){
+        add_meta_box('event_author', 'Event Organizer', array($this, 'displayEventOrganizer'), 'event', 'normal', 'high');
         add_meta_box('event_time', 'Event Time', array($this, 'displayEventTime'), 'event', 'normal', 'high');
         add_meta_box('event_platform', 'Event Platform', array($this, 'displayEventPlatform'), 'event', 'normal', 'high');
         add_meta_box('event_is_members_only', 'Is the event members only?', array($this, 'displayEventMembersOnly'), 'event', 'normal', 'high');
         add_meta_box('event_requires_ticket', 'Does the event require a ticket?', array($this, 'displayEventRequiresTicket'), 'event', 'normal', 'high');
         add_meta_box('event_has_limit', 'Does the event have a limit on the number of people that can attend?', array($this, 'displayEventHasLimit'), 'event', 'normal', 'high');
+    }
+
+    function displayEventOrganizer(){
+        global $post;
+        global $wpdb;
+        $query = 'select users.user_nicename, users.ID, users.user_email
+        from %i posts
+        join %i users on posts.post_author = users.id
+        and posts.id = %d';
+        $results = $wpdb->get_results($wpdb->prepare($query, $this->posts_table, $this->users_table, $post->ID), ARRAY_A);
+        if ($results){
+            echo $results[0]['user_nicename'] . ' (userid: ' . $results[0]['ID'] . ', email: ' . $results[0]['user_email'] . ')';
+        }
     }
 
     function displayEventTime(){

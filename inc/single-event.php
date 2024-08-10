@@ -8,6 +8,9 @@ $users_table = $wpdb->prefix . "users";
 $usermeta_table = $wpdb->prefix . "usermeta";
 $event_signups_table = $wpdb->prefix . "tomc_event_signups";
 $event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
+$lookup_table = $wpdb->prefix . "wc_order_product_lookup";
+$order_items_table = $wpdb->prefix . "woocommerce_order_items";
+$event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
 $query = 'select posts.post_title, 
 posts.post_content, 
 timestring.meta_value as time_string, 
@@ -49,16 +52,14 @@ $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $users_table,
                     $user = wp_get_current_user();
                     if ($results[0]['ticket_product'] != 'null' && $results[0]['ticket_product'] != ''){
                         //checking for purchased ticket
-                        $lookup_table = $wpdb->prefix . "wc_order_product_lookup";
-                        $order_items_table = $wpdb->prefix . "woocommerce_order_items";
-                        $event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
                         $userQuery = 'select posts.id
                         from %i orderitems
                         join %i lookup on orderitems.order_id = lookup.order_id
                         join %i posts on lookup.order_id = posts.id
-                        join %i eventtickets on eventtickets.productid = l.product_id
+                        join %i eventtickets on eventtickets.productid = lookup.product_id
                         where eventtickets.eventid = %d
                         and posts.post_author = %d';
+                        $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $order_items_table, $lookup_table, $posts_table, $event_tickets_table, $postId, $userId), ARRAY_A);
                         if (($userResults) && count($userResults) > 0){
                             ?><p class="centered-text">You've already ordered a ticket for this event.</p>
                         <?php } else {
@@ -112,16 +113,14 @@ $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $users_table,
                     $user = wp_get_current_user();
                     if ($results[0]['ticket_product'] != 'null' && $results[0]['ticket_product'] != ''){
                         //checking for purchased ticket
-                        $lookup_table = $wpdb->prefix . "wc_order_product_lookup";
-                        $order_items_table = $wpdb->prefix . "woocommerce_order_items";
-                        $event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
                         $userQuery = 'select posts.id
                         from %i orderitems
                         join %i lookup on orderitems.order_id = lookup.order_id
                         join %i posts on lookup.order_id = posts.id
-                        join %i eventtickets on eventtickets.productid = l.product_id
+                        join %i eventtickets on eventtickets.productid = lookup.product_id
                         where eventtickets.eventid = %d
                         and posts.post_author = %d';
+                        $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $order_items_table, $lookup_table, $posts_table, $event_tickets_table, $postId, $userId), ARRAY_A);
                         if (($userResults) && count($userResults) > 0){
                             ?><p class="centered-text">You've already ordered a ticket for this event.</p>
                         <?php } else {
