@@ -54,19 +54,20 @@ class MyEvents{
     }
     
     manageUpcomingOrganizedEvents(){
-        let h2 = $('<h2/>').addClass('centered-text').html("Upcoming Events I'm Organizing");
-        this.manageUpcomingEventsSection.append(h2);
+        this.manageUpcomingEventsSpan.addClass('contracting');
+        setTimeout(()=> this.manageUpcomingEventsSpan.removeClass('contracting'), 3000);
         $.ajax({
             beforeSend: (xhr) => {
                 xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
             },
             url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEventsByOrganizer',
             type: 'GET',
-            success: (response) => {
-                console.log(response);
-                this.manageUpcomingEventsSpan.addClass('hidden');
-                this.manageUpcomingEventsSpan.removeClass('purple-span');
+            success: (response) => {               
                 if (response){
+                    let h2 = $('<h2/>').addClass('centered-text').html("Upcoming Events I'm Organizing"); 
+                    this.manageUpcomingEventsSection.append(h2);
+                    this.manageUpcomingEventsSpan.addClass('hidden');
+                    this.manageUpcomingEventsSpan.removeClass('orange-span');
                     for (let i = 0; i < response.length; i++){
                         let h3 = $('<h3/>').html(response[i]['post_title']).addClass('centered-text');
                         this.manageUpcomingEventsSection.append(h3);
@@ -94,8 +95,6 @@ class MyEvents{
                 console.log(response);
             }
         });
-        this.manageUpcomingEventsSpan.addClass('hidden');
-        this.manageUpcomingEventsSpan.removeClass('orange-span');
     }
 
     addNewEvent(){
@@ -254,6 +253,8 @@ class MyEvents{
     }
 
     getRegisteredEvents(){
+        this.upcomingRegisteredEventsSpan.addClass('contracting');
+        setTimeout(()=> this.upcomingRegisteredEventsSpan.removeClass('contracting'), 3000);
         $.ajax({
             beforeSend: (xhr) => {
                 xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);

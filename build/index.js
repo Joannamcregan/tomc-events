@@ -237,8 +237,8 @@ class MyEvents {
     this.submitButton.on('click', this.submitNewEvent.bind(this));
   }
   manageUpcomingOrganizedEvents() {
-    let h2 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html("Upcoming Events I'm Organizing");
-    this.manageUpcomingEventsSection.append(h2);
+    this.manageUpcomingEventsSpan.addClass('contracting');
+    setTimeout(() => this.manageUpcomingEventsSpan.removeClass('contracting'), 3000);
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
       beforeSend: xhr => {
         xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
@@ -246,10 +246,11 @@ class MyEvents {
       url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEventsByOrganizer',
       type: 'GET',
       success: response => {
-        console.log(response);
-        this.manageUpcomingEventsSpan.addClass('hidden');
-        this.manageUpcomingEventsSpan.removeClass('purple-span');
         if (response) {
+          let h2 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html("Upcoming Events I'm Organizing");
+          this.manageUpcomingEventsSection.append(h2);
+          this.manageUpcomingEventsSpan.addClass('hidden');
+          this.manageUpcomingEventsSpan.removeClass('orange-span');
           for (let i = 0; i < response.length; i++) {
             let h3 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h3/>').html(response[i]['post_title']).addClass('centered-text');
             this.manageUpcomingEventsSection.append(h3);
@@ -277,8 +278,6 @@ class MyEvents {
         console.log(response);
       }
     });
-    this.manageUpcomingEventsSpan.addClass('hidden');
-    this.manageUpcomingEventsSpan.removeClass('orange-span');
   }
   addNewEvent() {
     this.addEventSection.removeClass('hidden');
@@ -425,6 +424,8 @@ class MyEvents {
     this.chosenTimeZone = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).attr('html');
   }
   getRegisteredEvents() {
+    this.upcomingRegisteredEventsSpan.addClass('contracting');
+    setTimeout(() => this.upcomingRegisteredEventsSpan.removeClass('contracting'), 3000);
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
       beforeSend: xhr => {
         xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
