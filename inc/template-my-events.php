@@ -12,7 +12,7 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
         // $userId = get_current_user_id();
         $userId = $user->ID;
         ?><span class="purple-span" id="upcoming-registered-events-span">Upcoming Registered Events</span>
-        <div id="tomc-registered-events-section">
+        <div id="tomc-registered-events-section" class="hidden">
     
         </div>
         <span class="orange-span" id="manage-upcoming-events-span">Manage Upcoming Events</span>
@@ -23,9 +23,8 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
         <div id="tomc-manage-past-events-section">
     
         </div>
-        <span class="purple-span" id="tomc-add-event-span">Add New Event</span>
+        <span class="purple-span" id="tomc-add-event-span" class="hidden">Add New Event</span>
         <div id="tomc-new-event-section" class="hidden">
-            <h2 class="centered-text">Submit a New Event</h2>
             <p class="centered-text"><em>All events must be approved by admin before they will be shown to the community.</em></p>
             <label for="tomc-event-free-or-paid" class="centered-text block">Is this event free, or does it require a ticket?</label>
             <div class="tomc-new-event-option-group">

@@ -35,7 +35,7 @@ class MyEvents{
         this.chosenTimeZone = '';
         this.isLimited = false;
         this.isBridge = true;
-        this.upcomingEventsAdded = false;
+        this.registeredEventsAdded = false;
         this.manageUpcomingEventsAdded = false;
         this.managePastEventsAdded = false;
     }
@@ -57,7 +57,6 @@ class MyEvents{
     }
     
     manageUpcomingOrganizedEvents(){
-        console.log('called ittt');
         this.manageUpcomingEventsSpan.addClass('contracting');
         setTimeout(()=> {
             this.manageUpcomingEventsSpan.removeClass('contracting');
@@ -75,8 +74,8 @@ class MyEvents{
                 success: (response) => {               
                     if (response.length > 0){                       
                         for (let i = 0; i < response.length; i++){
-                            let h3 = $('<h3/>').html(response[i]['post_title']).addClass('centered-text');
-                            this.manageUpcomingEventsSection.append(h3);
+                            let h2 = $('<h2/>').html(response[i]['post_title']).addClass('centered-text');
+                            this.manageUpcomingEventsSection.append(h2);
                             let p = $('<p/>').addClass('centered-text');
                             let strong = '';
                             if (response[i]['post_status'] == 'publish'){
@@ -109,9 +108,13 @@ class MyEvents{
     }
 
     addNewEvent(){
-        this.addEventSection.removeClass('hidden');        
-        this.addEventSpan.addClass('hidden');
-        this.addEventSpan.removeClass('purple-span');
+        this.addEventSpan.addClass('contracting');
+        setTimeout(()=> {
+            this.addEventSpan.removeClass('contracting');
+            this.addEventSection.toggleClass('hidden');        
+            this.addEventSpan.toggleClass('hollow-purple-span');
+            this.addEventSpan.toggleClass('purple-span');
+        }, 2000);
     }   
     
     submitNewEvent(){
@@ -265,44 +268,48 @@ class MyEvents{
 
     getRegisteredEvents(){
         this.upcomingRegisteredEventsSpan.addClass('contracting');
-        setTimeout(()=> this.upcomingRegisteredEventsSpan.removeClass('contracting'), 3000);
-        $.ajax({
-            beforeSend: (xhr) => {
-                xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
-            },
-            url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingRegisteredEvents',
-            type: 'GET',
-            success: (response) => {
-                this.upcomingRegisteredEventsSpan.addClass('hidden');
-                this.upcomingRegisteredEventsSpan.removeClass('purple-span');
-                let newHeading = $('<h2/>').addClass('centered-text').html("Events I'm Planning to Attend");
-                this.upcomingRegisteredEventsSection.append(newHeading);
-                if (response.length > 0){                    
-                    let newSection = $('<div/>').addClass('generic-content');
-                    this.upcomingRegisteredEventsSection.append(newSection);
-                    for (let i = 0; i < response.length; i++){
-                        let newLink = $('<a/>').attr('href', response[i]['post_url']);
-                        newHeading = $('<h3/>').html(response[i]['post_title']);
-                        newLink.append(newHeading);
-                        newSection.append(newLink);
-                        let newP = $('<p/>');
-                        let newEm = $('<strong/>').html(response[i]['time_string']);
-                        newP.append(newEm);
-                        newSection.append(newP);
-                        newP = $('<p/>').html(response[i]['post_content']);
-                        newSection.append(newP);
-                        let newLine = $('<div/>').addClass('orange-yellow-line-break-30');
-                        newSection.append(newLine);
+        setTimeout(()=> {
+            this.upcomingRegisteredEventsSpan.removeClass('contracting');
+            this.upcomingRegisteredEventsSpan.toggleClass('hollow-purple-span');
+            this.upcomingRegisteredEventsSpan.toggleClass('purple-span');
+            this.upcomingRegisteredEventsSection.toggleClass('hidden');
+        }, 2000);
+        if (this.registeredEventsAdded == false){
+            $.ajax({
+                beforeSend: (xhr) => {
+                    xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+                },
+                url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingRegisteredEvents',
+                type: 'GET',
+                success: (response) => {
+                    if (response.length > 0){                    
+                        let newSection = $('<div/>').addClass('generic-content');
+                        this.upcomingRegisteredEventsSection.append(newSection);
+                        for (let i = 0; i < response.length; i++){
+                            let newLink = $('<a/>').attr('href', response[i]['post_url']);
+                            let newHeading = $('<h2/>').html(response[i]['post_title']);
+                            newLink.append(newHeading);
+                            newSection.append(newLink);
+                            let newP = $('<p/>');
+                            let newEm = $('<strong/>').html(response[i]['time_string']);
+                            newP.append(newEm);
+                            newSection.append(newP);
+                            newP = $('<p/>').html(response[i]['post_content']);
+                            newSection.append(newP);
+                            let newLine = $('<div/>').addClass('orange-yellow-line-break-30');
+                            newSection.append(newLine);
+                        }
+                    } else {
+                        let newP = $('<p/>').addClass('centered-text').html('You currently have no upcoming events.');
+                        this.upcomingEventsContainer.append(newP);
                     }
-                } else {
-                    let newP = $('<p/>').addClass('centered-text').html('You currently have no upcoming events.');
-                    this.upcomingEventsContainer.append(newP);
+                    this.registeredEventsAdded = true;
+                },
+                failure: (response) => {
+                    console.log(response);
                 }
-            },
-            failure: (response) => {
-                console.log(response);
-            }
-        })
+            })
+        }
     }
 }
 

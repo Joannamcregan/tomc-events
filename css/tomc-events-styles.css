@@ -11,21 +11,24 @@
     height: 30px;
 }
 #tomc-new-event-section input[type='text']{
-    width: 250px;
+    width: 280px;
     border-radius: 10px;
     margin: 10px auto;
+    padding: 5px 10px;
     text-align: center;
 }
 #tomc-new-event-section input[type="date"]{
     width: 200px;
     border-radius: 10px;
     margin: 10px auto;
+    padding: 5px 10px;
     text-align: center;
 }
 #tomc-new-event-section input[type="time"]{
     width: 200px;
     border-radius: 10px;
     margin: 10px auto;
+    padding: 5px 10px;
     text-align: center;
 }
 #tomc-new-event-section textarea{
@@ -43,7 +46,7 @@
 }
 .tomc-new-event-option-group{
     width: fit-content;
-    margin: 30px auto;
+    margin: 10px auto 30px auto;
     padding: 0px 40px;
     display: flex;
     flex-wrap: wrap;
