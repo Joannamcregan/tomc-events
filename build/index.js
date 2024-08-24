@@ -240,46 +240,55 @@ class MyEvents {
     this.submitButton.on('click', this.submitNewEvent.bind(this));
   }
   manageUpcomingOrganizedEvents() {
+    console.log('called ittt');
     this.manageUpcomingEventsSpan.addClass('contracting');
-    setTimeout(() => this.manageUpcomingEventsSpan.removeClass('contracting'), 3000);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
-      beforeSend: xhr => {
-        xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
-      },
-      url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEventsByOrganizer',
-      type: 'GET',
-      success: response => {
-        if (response) {
-          this.manageUpcomingEventsSpan.addClass('hollow-orange-span');
-          this.manageUpcomingEventsSpan.removeClass('orange-span');
-          this.manageUpcomingEventsAdded = true;
-          for (let i = 0; i < response.length; i++) {
-            let h3 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h3/>').html(response[i]['post_title']).addClass('centered-text');
-            this.manageUpcomingEventsSection.append(h3);
-            let p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text');
-            let strong = '';
-            if (response[i]['post_status'] == 'publish') {
-              strong = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('Approved by admin');
-            } else if (response[i]['post_status'] == 'draft') {
-              strong = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('Awaiting admin approval');
-            } else {
-              strong = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('Not approved by admin');
+    setTimeout(() => {
+      this.manageUpcomingEventsSpan.removeClass('contracting');
+      this.manageUpcomingEventsSpan.toggleClass('hollow-orange-span');
+      this.manageUpcomingEventsSpan.toggleClass('orange-span');
+      this.manageUpcomingEventsSection.toggleClass('hidden');
+    }, 2000);
+    if (this.manageUpcomingEventsAdded == false) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+        beforeSend: xhr => {
+          xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+        },
+        url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEventsByOrganizer',
+        type: 'GET',
+        success: response => {
+          if (response.length > 0) {
+            for (let i = 0; i < response.length; i++) {
+              let h3 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h3/>').html(response[i]['post_title']).addClass('centered-text');
+              this.manageUpcomingEventsSection.append(h3);
+              let p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text');
+              let strong = '';
+              if (response[i]['post_status'] == 'publish') {
+                strong = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('Approved by admin');
+              } else if (response[i]['post_status'] == 'draft') {
+                strong = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('Awaiting admin approval');
+              } else {
+                strong = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('Not approved by admin');
+              }
+              p.append(strong);
+              this.manageUpcomingEventsSection.append(p);
+              p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text');
+              let em = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<em/>').html(response[i]['time_string']);
+              p.append(em);
+              this.manageUpcomingEventsSection.append(p);
+              p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['post_content']).addClass('centered-text');
+              this.manageUpcomingEventsSection.append(p);
             }
-            p.append(strong);
-            this.manageUpcomingEventsSection.append(p);
-            p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text');
-            let em = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<em/>').html(response[i]['time_string']);
-            p.append(em);
-            this.manageUpcomingEventsSection.append(p);
-            p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['post_content']).addClass('centered-text');
+          } else {
+            let p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html("It doesn't look like you're organizing any upcoming events right now.");
             this.manageUpcomingEventsSection.append(p);
           }
+          this.manageUpcomingEventsAdded = true;
+        },
+        error: response => {
+          console.log(response);
         }
-      },
-      error: response => {
-        console.log(response);
-      }
-    });
+      });
+    }
   }
   addNewEvent() {
     this.addEventSection.removeClass('hidden');

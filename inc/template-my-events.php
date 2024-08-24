@@ -8,13 +8,15 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
     <div class="banner"><h1 class="centered-text">My Events</h1></div>
     <br>
     <?php if (is_user_logged_in()){
-        $userId = get_current_user_id();
+        $user = wp_get_current_user();
+        // $userId = get_current_user_id();
+        $userId = $user->ID;
         ?><span class="purple-span" id="upcoming-registered-events-span">Upcoming Registered Events</span>
         <div id="tomc-registered-events-section">
     
         </div>
         <span class="orange-span" id="manage-upcoming-events-span">Manage Upcoming Events</span>
-        <div id="tomc-manage-upcoming-events-section">
+        <div id="tomc-manage-upcoming-events-section" class="hidden">
     
         </div>
         <span class="blue-span" id="manage-past-events-span">Manage Past Events</span>
