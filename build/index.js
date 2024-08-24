@@ -217,7 +217,7 @@ class MyEvents {
     this.events();
     this.requiresTicket = false;
     this.isMembersOnly = false;
-    this.chosenTimeZone = '';
+    this.chosenTimeZone = 'Hawaii Time';
     this.isLimited = false;
     this.isBridge = true;
     this.registeredEventsAdded = false;
@@ -435,7 +435,8 @@ class MyEvents {
   selectTimeZone(e) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tomc-event-time-zone-option').removeClass('tomc-events--option-selected');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).addClass('tomc-events--option-selected');
-    this.chosenTimeZone = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).attr('html');
+    this.chosenTimeZone = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).text();
+    console.log(this.chosenTimeZone);
   }
   getRegisteredEvents() {
     this.upcomingRegisteredEventsSpan.addClass('contracting');
@@ -462,7 +463,7 @@ class MyEvents {
               newLink.append(newHeading);
               newSection.append(newLink);
               let newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>');
-              let newEm = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html(response[i]['time_string']);
+              let newEm = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('scheduled for ' + response[i]['time_string']);
               newP.append(newEm);
               newSection.append(newP);
               newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['post_content']);

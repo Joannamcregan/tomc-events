@@ -32,7 +32,7 @@ class MyEvents{
         this.events();
         this.requiresTicket = false;
         this.isMembersOnly = false;
-        this.chosenTimeZone = '';
+        this.chosenTimeZone = 'Hawaii Time';
         this.isLimited = false;
         this.isBridge = true;
         this.registeredEventsAdded = false;
@@ -263,7 +263,8 @@ class MyEvents{
     selectTimeZone(e){
         $('.tomc-event-time-zone-option').removeClass('tomc-events--option-selected');
         $(e.target).addClass('tomc-events--option-selected');
-        this.chosenTimeZone = $(e.target).attr('html');
+        this.chosenTimeZone = $(e.target).text();
+        console.log(this.chosenTimeZone);
     }
 
     getRegisteredEvents(){
@@ -291,7 +292,7 @@ class MyEvents{
                             newLink.append(newHeading);
                             newSection.append(newLink);
                             let newP = $('<p/>');
-                            let newEm = $('<strong/>').html(response[i]['time_string']);
+                            let newEm = $('<strong/>').html('scheduled for ' + response[i]['time_string']);
                             newP.append(newEm);
                             newSection.append(newP);
                             newP = $('<p/>').html(response[i]['post_content']);
