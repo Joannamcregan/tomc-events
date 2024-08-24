@@ -220,6 +220,9 @@ class MyEvents {
     this.chosenTimeZone = '';
     this.isLimited = false;
     this.isBridge = true;
+    this.upcomingEventsAdded = false;
+    this.manageUpcomingEventsAdded = false;
+    this.managePastEventsAdded = false;
   }
   events() {
     this.manageUpcomingEventsSpan.on('click', this.manageUpcomingOrganizedEvents.bind(this));
@@ -247,10 +250,9 @@ class MyEvents {
       type: 'GET',
       success: response => {
         if (response) {
-          let h2 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').addClass('centered-text').html("Upcoming Events I'm Organizing");
-          this.manageUpcomingEventsSection.append(h2);
-          this.manageUpcomingEventsSpan.addClass('hidden');
+          this.manageUpcomingEventsSpan.addClass('hollow-orange-span');
           this.manageUpcomingEventsSpan.removeClass('orange-span');
+          this.manageUpcomingEventsAdded = true;
           for (let i = 0; i < response.length; i++) {
             let h3 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h3/>').html(response[i]['post_title']).addClass('centered-text');
             this.manageUpcomingEventsSection.append(h3);
