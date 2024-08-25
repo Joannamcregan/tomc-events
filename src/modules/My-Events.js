@@ -72,11 +72,13 @@ class MyEvents{
                 url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingEventsByOrganizer',
                 type: 'GET',
                 success: (response) => {               
-                    if (response.length > 0){                       
+                    if (response.length > 0){            
+                        let newSection = $('<div/>').addClass('generic-content');
+                        this.manageUpcomingEventsSection.append(newSection);           
                         for (let i = 0; i < response.length; i++){
-                            let h2 = $('<h2/>').html(response[i]['post_title']).addClass('centered-text');
-                            this.manageUpcomingEventsSection.append(h2);
-                            let p = $('<p/>').addClass('centered-text');
+                            let h2 = $('<h2/>').html(response[i]['post_title']);
+                            newSection.append(h2);
+                            let p = $('<p/>');
                             let strong = '';
                             if (response[i]['post_status'] == 'publish'){
                                 strong = $('<strong/>').html('Approved by admin');
@@ -86,13 +88,15 @@ class MyEvents{
                                 strong = $('<strong/>').html('Not approved by admin');
                             }
                             p.append(strong);
-                            this.manageUpcomingEventsSection.append(p);
-                            p = $('<p/>').addClass('centered-text');
-                            let em = $('<em/>').html(response[i]['time_string']);
+                            newSection.append(p);
+                            p = $('<p/>');
+                            let em = $('<em/>').html('schedulted for ' + response[i]['time_string']);
                             p.append(em);
-                            this.manageUpcomingEventsSection.append(p);
-                            p = $('<p/>').html(response[i]['post_content']).addClass('centered-text');
-                            this.manageUpcomingEventsSection.append(p);
+                            newSection.append(p);
+                            p = $('<p/>').html(response[i]['post_content']);
+                            newSection.append(p);
+                            let newLine = $('<div/>').addClass('orange-yellow-line-break-30');
+                            newSection.append(newLine);
                         }
                     } else {
                         let p = $('<p/>').addClass('centered-text').html("It doesn't look like you're organizing any upcoming events right now.");

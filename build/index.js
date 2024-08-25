@@ -256,10 +256,12 @@ class MyEvents {
         type: 'GET',
         success: response => {
           if (response.length > 0) {
+            let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
+            this.manageUpcomingEventsSection.append(newSection);
             for (let i = 0; i < response.length; i++) {
-              let h2 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').html(response[i]['post_title']).addClass('centered-text');
-              this.manageUpcomingEventsSection.append(h2);
-              let p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text');
+              let h2 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').html(response[i]['post_title']);
+              newSection.append(h2);
+              let p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>');
               let strong = '';
               if (response[i]['post_status'] == 'publish') {
                 strong = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('Approved by admin');
@@ -269,13 +271,15 @@ class MyEvents {
                 strong = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<strong/>').html('Not approved by admin');
               }
               p.append(strong);
-              this.manageUpcomingEventsSection.append(p);
-              p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text');
-              let em = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<em/>').html(response[i]['time_string']);
+              newSection.append(p);
+              p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>');
+              let em = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<em/>').html('schedulted for ' + response[i]['time_string']);
               p.append(em);
-              this.manageUpcomingEventsSection.append(p);
-              p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['post_content']).addClass('centered-text');
-              this.manageUpcomingEventsSection.append(p);
+              newSection.append(p);
+              p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['post_content']);
+              newSection.append(p);
+              let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
+              newSection.append(newLine);
             }
           } else {
             let p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html("It doesn't look like you're organizing any upcoming events right now.");
