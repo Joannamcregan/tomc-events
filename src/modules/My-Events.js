@@ -125,6 +125,16 @@ class MyEvents{
             $('#tomc-events-no-time-error').addClass('hidden');
             $('#tomc-events-no-description-error').addClass('hidden');
             $('#tomc-events-no-limit-error').addClass('hidden');
+            let timeString;
+            if (parseInt(this.eventTime.val().substring(0,2)) == 12){
+                timeString = this.eventTime.val() + ' PM'
+            } else if (parseInt(this.eventTime.val().substring(0,2)) > 12){
+                timeString = (parseInt(this.eventTime.val().substring(0,2)) - 12) + this.eventTime.val().substring(2) + ' PM'
+            } else if (parseInt(this.eventTime.val().substring(0,2)) == 0){
+                timeString = '12' + this.eventTime.val().substring(2) + ' AM'
+            } else {
+                timeString = this.eventTime.val() + ' AM'
+            }
             $.ajax({
                 beforeSend: (xhr) => {
                     xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
@@ -135,7 +145,7 @@ class MyEvents{
                     'title' : this.eventTitle.val().substring(0, 200),
                     'product' : this.ticketProductSelect.val(),
                     'date' : this.eventDate.val(),
-                    'time' : this.eventTime.val(),
+                    'time' : timeString,
                     'timezone' : this.chosenTimeZone,
                     'description' : this.eventDescription.val(),
                     'limit' : this.eventLimit.val(),
