@@ -27,6 +27,10 @@ function tomcEventsRegisterRoute() {
         'methods' => 'GET',
         'callback' => 'getUpcomingEventsByOrganizer'
     ));
+    register_rest_route('tomcEvents/v1', 'getPastEventsByOrganizer', array(
+        'methods' => 'GET',
+        'callback' => 'getPastEventsByOrganizer'
+    ));
 }
 
 function getUpcomingEvents(){
@@ -72,6 +76,29 @@ function getPastEvents(){
     return $results;
 }
 
+function getPastEventsByOrganizer(){
+    global $wpdb;
+    $user = wp_get_current_user();
+    $userId = get_current_user_id();
+    if (is_user_logged_in()){
+        $posts_table = $wpdb->prefix . "posts";
+        $postmeta_table = $wpdb->prefix . "postmeta";
+        $query = 'select posts.post_title, posts.id
+        from %i posts
+        join %i eventdate on posts.id = eventdate.post_id
+        and eventdate.meta_key = "_tomc_event_date"
+        where posts.post_type = "event"
+        and eventdate.meta_value < now()
+        and posts.post_author = %d';
+        $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $postmeta_table, $userId), ARRAY_A);
+        return $results;
+        // return $wpdb->prepare($query, $posts_table, $postmeta_table, $postmeta_table, $userId);
+    } else {
+        wp_safe_redirect(site_url('/my-account'));
+        return 'fail';
+    }
+}
+
 function getUpcomingEventsByOrganizer(){
     global $wpdb;
     $user = wp_get_current_user();
@@ -79,7 +106,7 @@ function getUpcomingEventsByOrganizer(){
     if (is_user_logged_in()){
         $posts_table = $wpdb->prefix . "posts";
         $postmeta_table = $wpdb->prefix . "postmeta";
-        $query = 'select posts.post_title, timestring.meta_value as time_string, posts.post_status, posts.post_content
+        $query = 'select posts.id, posts.post_title, timestring.meta_value as time_string, posts.post_status, posts.post_content
         from %i posts
         join %i eventdate on posts.id = eventdate.post_id
         and eventdate.meta_key = "_tomc_event_date"

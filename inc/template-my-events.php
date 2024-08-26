@@ -20,7 +20,7 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
     
         </div>
         <span class="blue-span" id="manage-past-events-span">Manage Past Events</span>
-        <div id="tomc-manage-past-events-section">
+        <div id="tomc-manage-past-events-section" class="hidden">
     
         </div>
         <span class="purple-span" id="tomc-add-event-span" class="hidden">Add New Event</span>

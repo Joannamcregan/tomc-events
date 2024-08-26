@@ -41,137 +41,137 @@ $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $users_table,
 ?><main>
     <div class="banner"><h1 class="centered-text"><?php echo $results[0]['post_title']; ?></h1></div>
     <br>
-    <p class="centered-text"><strong><?php echo $results[0]['time_string']; ?></strong></p>
+    <p class="centered-text"><strong><?php echo 'scheduled for ' . $results[0]['time_string']; ?></strong></p>
     <div class="generic-content">
-        <?php echo $results[0]['post_content']; 
-        if (($results[0]['eventdate'] != 'null') && ($results[0]['eventdate'] >= date('Y-m-d H:i:s'))){
-            if ($results[0]['members_only'] == 1){
-                ?><p class="right-text"><em>This event is members-only.</em></p>
-                <?php if (is_user_logged_in()){
-                    $userId = get_current_user_id();
-                    $user = wp_get_current_user();
-                    if ($results[0]['ticket_product'] != 'null' && $results[0]['ticket_product'] != ''){
-                        //checking for purchased ticket
-                        $userQuery = 'select posts.id
-                        from %i orderitems
-                        join %i lookup on orderitems.order_id = lookup.order_id
-                        join %i posts on lookup.order_id = posts.id
-                        join %i eventtickets on eventtickets.productid = lookup.product_id
-                        where eventtickets.eventid = %d
-                        and posts.post_author = %d';
-                        $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $order_items_table, $lookup_table, $posts_table, $event_tickets_table, $postId, $userId), ARRAY_A);
-                        if (($userResults) && count($userResults) > 0){
-                            ?><p class="centered-text">You've already ordered a ticket for this event.</p>
-                        <?php } else {
-                            $productQuery = 'select productid
-                            from %i
-                            where eventid = %d';
-                            $productResults = $wpdb->get_results($wpdb->prepare($productQuery, $event_tickets_table, $postId), ARRAY_A);
-                            ?><a class="no-decoration" href="<?php echo get_the_permalink($productResults[0]['productid']); ?>"><span class="blue-span tomc-event-ticket-link">Order a Ticket</span></a>
-                        <?php }
-                    } else {
-                        //checking for registration
-                        $userQuery = 'select id
-                        from %i
-                        where participantid = %d
-                        and eventid = %d';
-                        $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $event_signups_table, $userId, $postId), ARRAY_A);
-                        if (($userResults) && count($userResults) > 0){
-                            ?><p class="centered-text"><strong>You are already registered for this event</strong></p>
-                        <?php } else {
-                            if ($results[0]['seat_limit'] != 'null' && $results[0]['seat_limit'] != ''){
-                                if ($results[0]['seat_limit'] > $results[0]['signups']){
-                                    if ($results[0]['members_only'] == 1){
-                                        if (in_array( 'reader-member', (array) $user->roles ) || in_array( 'creator-member', (array) $user->roles ) || in_array( 'administrator', (array) $user->roles )){
-                                            ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
-                                            <p class="tomc-registration-success centered-text hidden">You're registered!</p>
-                                            <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
-                                        <?php } else {
-                                            ?><p class="centered-text">Before you can register for this event, you must <a href="<?php echo esc_url(site_url('/own'));?>">join our cooperative</a>.</p>
-                                        <?php }
-                                    } else {
-                                        ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
-                                        <p class="tomc-registration-success centered-text hidden">You're registered!</p>
-                                        <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
-                                    <?php }
-                                } else {
-                                    ?><p class="centered-text"><strong>Sorry, this event is full.</strong></p>
-                                <?php }
-                            } else {
-                                ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
-                                <p class="tomc-registration-success centered-text hidden">You're registered!</p>
-                                <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
-                            <?php }
-                        }
-                    }
-                } else {
-                    ?><p class="centered-text"><strong>To register for an event, you must first <a href="<?php echo esc_url(site_url('/my-account'));?>">login</a>.</strong></p>
-                <?php }
-            } else {
-                if (is_user_logged_in()){
-                    $userId = get_current_user_id();
-                    $user = wp_get_current_user();
-                    if ($results[0]['ticket_product'] != 'null' && $results[0]['ticket_product'] != ''){
-                        //checking for purchased ticket
-                        $userQuery = 'select posts.id
-                        from %i orderitems
-                        join %i lookup on orderitems.order_id = lookup.order_id
-                        join %i posts on lookup.order_id = posts.id
-                        join %i eventtickets on eventtickets.productid = lookup.product_id
-                        where eventtickets.eventid = %d
-                        and posts.post_author = %d';
-                        $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $order_items_table, $lookup_table, $posts_table, $event_tickets_table, $postId, $userId), ARRAY_A);
-                        if (($userResults) && count($userResults) > 0){
-                            ?><p class="centered-text">You've already ordered a ticket for this event.</p>
-                        <?php } else {
-                            $productQuery = 'select productid
-                            from %i
-                            where eventid = %d';
-                            $productResults = $wpdb->get_results($wpdb->prepare($productQuery, $event_tickets_table, $postId), ARRAY_A);
-                            ?><a class="no-decoration" href="<?php echo get_the_permalink($productResults[0]['productid']); ?>"><span class="blue-span tomc-event-ticket-link">Order a Ticket</span></a>
-                        <?php }
-                    } else {
-                        //checking for registration
-                        $userQuery = 'select id
-                        from %i
-                        where participantid = %d
-                        and eventid = %d';
-                        $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $event_signups_table, $userId, $postId), ARRAY_A);
-                        if (($userResults) && count($userResults) > 0){
-                            ?><p class="centered-text"><strong>You are already registered for this event</strong></p>
-                        <?php } else {
-                            if ($results[0]['seat_limit'] != 'null' && $results[0]['seat_limit'] != ''){
-                                if ($results[0]['seat_limit'] > $results[0]['signups']){
-                                    if ($results[0]['members_only'] == 1){
-                                        if (in_array( 'reader-member', (array) $user->roles ) || in_array( 'creator-member', (array) $user->roles ) || in_array( 'administrator', (array) $user->roles )){
-                                            ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
-                                            <p class="tomc-registration-success centered-text hidden">You're registered!</p>
-                                            <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
-                                        <?php } else {
-                                            ?><p class="centered-text">Before you can register for this event, you must <a href="<?php echo esc_url(site_url('/own'));?>">join our cooperative</a>.</p>
-                                        <?php }
-                                    } else {
-                                        ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
-                                        <p class="tomc-registration-success centered-text hidden">You're registered!</p>
-                                        <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
-                                    <?php }
-                                } else {
-                                    ?><p class="centered-text"><strong>Sorry, this event is full.</strong></p>
-                                <?php }
-                            } else {
-                                ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
-                                <p class="tomc-registration-success centered-text hidden">You're registered!</p>
-                                <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
-                            <?php }
-                        }
-                    }
-                } else {
-                    ?><p class="centered-text"><strong>To register for an event, you must first <a href="<?php echo esc_url(site_url('/my-account'));?>">login</a>.</strong></p>
-                <?php }
-            }
-        }
+        <?php echo $results[0]['post_content'];
     ?></div>
-    <div class="generic-wrapper-2">
+        <?php if (($results[0]['eventdate'] != 'null') && ($results[0]['eventdate'] >= date('Y-m-d H:i:s'))){
+        if ($results[0]['members_only'] == 1){
+            ?><p class="right-text"><em>This event is members-only.</em></p>
+            <?php if (is_user_logged_in()){
+                $userId = get_current_user_id();
+                $user = wp_get_current_user();
+                if ($results[0]['ticket_product'] != 'null' && $results[0]['ticket_product'] != ''){
+                    //checking for purchased ticket
+                    $userQuery = 'select posts.id
+                    from %i orderitems
+                    join %i lookup on orderitems.order_id = lookup.order_id
+                    join %i posts on lookup.order_id = posts.id
+                    join %i eventtickets on eventtickets.productid = lookup.product_id
+                    where eventtickets.eventid = %d
+                    and posts.post_author = %d';
+                    $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $order_items_table, $lookup_table, $posts_table, $event_tickets_table, $postId, $userId), ARRAY_A);
+                    if (($userResults) && count($userResults) > 0){
+                        ?><p class="centered-text">You've already ordered a ticket for this event.</p>
+                    <?php } else {
+                        $productQuery = 'select productid
+                        from %i
+                        where eventid = %d';
+                        $productResults = $wpdb->get_results($wpdb->prepare($productQuery, $event_tickets_table, $postId), ARRAY_A);
+                        ?><a class="no-decoration" href="<?php echo get_the_permalink($productResults[0]['productid']); ?>"><span class="blue-span tomc-event-ticket-link">Order a Ticket</span></a>
+                    <?php }
+                } else {
+                    //checking for registration
+                    $userQuery = 'select id
+                    from %i
+                    where participantid = %d
+                    and eventid = %d';
+                    $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $event_signups_table, $userId, $postId), ARRAY_A);
+                    if (($userResults) && count($userResults) > 0){
+                        ?><p class="centered-text"><strong>You are already registered for this event</strong></p>
+                    <?php } else {
+                        if ($results[0]['seat_limit'] != 'null' && $results[0]['seat_limit'] != ''){
+                            if ($results[0]['seat_limit'] > $results[0]['signups']){
+                                if ($results[0]['members_only'] == 1){
+                                    if (in_array( 'reader-member', (array) $user->roles ) || in_array( 'creator-member', (array) $user->roles ) || in_array( 'administrator', (array) $user->roles )){
+                                        ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
+                                        <p class="tomc-registration-success centered-text hidden">You're registered!</p>
+                                        <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
+                                    <?php } else {
+                                        ?><p class="centered-text">Before you can register for this event, you must <a href="<?php echo esc_url(site_url('/own'));?>">join our cooperative</a>.</p>
+                                    <?php }
+                                } else {
+                                    ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
+                                    <p class="tomc-registration-success centered-text hidden">You're registered!</p>
+                                    <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
+                                <?php }
+                            } else {
+                                ?><p class="centered-text"><strong>Sorry, this event is full.</strong></p>
+                            <?php }
+                        } else {
+                            ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
+                            <p class="tomc-registration-success centered-text hidden">You're registered!</p>
+                            <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
+                        <?php }
+                    }
+                }
+            } else {
+                ?><p class="centered-text"><strong>To register for an event, you must first <a href="<?php echo esc_url(site_url('/my-account'));?>">login</a>.</strong></p>
+            <?php }
+        } else {
+            if (is_user_logged_in()){
+                $userId = get_current_user_id();
+                $user = wp_get_current_user();
+                if ($results[0]['ticket_product'] != 'null' && $results[0]['ticket_product'] != ''){
+                    //checking for purchased ticket
+                    $userQuery = 'select posts.id
+                    from %i orderitems
+                    join %i lookup on orderitems.order_id = lookup.order_id
+                    join %i posts on lookup.order_id = posts.id
+                    join %i eventtickets on eventtickets.productid = lookup.product_id
+                    where eventtickets.eventid = %d
+                    and posts.post_author = %d';
+                    $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $order_items_table, $lookup_table, $posts_table, $event_tickets_table, $postId, $userId), ARRAY_A);
+                    if (($userResults) && count($userResults) > 0){
+                        ?><p class="centered-text">You've already ordered a ticket for this event.</p>
+                    <?php } else {
+                        $productQuery = 'select productid
+                        from %i
+                        where eventid = %d';
+                        $productResults = $wpdb->get_results($wpdb->prepare($productQuery, $event_tickets_table, $postId), ARRAY_A);
+                        ?><a class="no-decoration" href="<?php echo get_the_permalink($productResults[0]['productid']); ?>"><span class="blue-span tomc-event-ticket-link">Order a Ticket</span></a>
+                    <?php }
+                } else {
+                    //checking for registration
+                    $userQuery = 'select id
+                    from %i
+                    where participantid = %d
+                    and eventid = %d';
+                    $userResults = $wpdb->get_results($wpdb->prepare($userQuery, $event_signups_table, $userId, $postId), ARRAY_A);
+                    if (($userResults) && count($userResults) > 0){
+                        ?><p class="centered-text"><strong>You are already registered for this event</strong></p>
+                    <?php } else {
+                        if ($results[0]['seat_limit'] != 'null' && $results[0]['seat_limit'] != ''){
+                            if ($results[0]['seat_limit'] > $results[0]['signups']){
+                                if ($results[0]['members_only'] == 1){
+                                    if (in_array( 'reader-member', (array) $user->roles ) || in_array( 'creator-member', (array) $user->roles ) || in_array( 'administrator', (array) $user->roles )){
+                                        ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
+                                        <p class="tomc-registration-success centered-text hidden">You're registered!</p>
+                                        <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
+                                    <?php } else {
+                                        ?><p class="centered-text">Before you can register for this event, you must <a href="<?php echo esc_url(site_url('/own'));?>">join our cooperative</a>.</p>
+                                    <?php }
+                                } else {
+                                    ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
+                                    <p class="tomc-registration-success centered-text hidden">You're registered!</p>
+                                    <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
+                                <?php }
+                            } else {
+                                ?><p class="centered-text"><strong>Sorry, this event is full.</strong></p>
+                            <?php }
+                        } else {
+                            ?><span class="purple-span tomc-event-register" data-post="<?php echo $postId; ?>">Register Now</span>
+                            <p class="tomc-registration-success centered-text hidden">You're registered!</p>
+                            <p class="tomc-registration-fail centered-text hidden">Sorry, we were not able to register you for this event. Please try again.</p>
+                        <?php }
+                    }
+                }
+            } else {
+                ?><p class="centered-text"><strong>To register for an event, you must first <a href="<?php echo esc_url(site_url('/my-account'));?>">login</a>.</strong></p>
+            <?php }
+        }
+    }
+    ?><div class="generic-wrapper-2">
         <div class="generic-wrapper-1">
             <div class="generic-wrapper-0">
                 <h2 class="centered-text">Meet the Organizer</h2>

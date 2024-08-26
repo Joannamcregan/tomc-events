@@ -242,6 +242,7 @@ class MyEvents {
     this.manageUpcomingEventsSpan.on('click', this.manageUpcomingOrganizedEvents.bind(this));
     this.addEventSpan.on('click', this.addNewEvent.bind(this));
     this.upcomingRegisteredEventsSpan.on('click', this.getRegisteredEvents.bind(this));
+    this.managePastEventsSpan.on('click', this.managePastEvents.bind(this));
     this.freeOption.on('click', this.selectFreeOption.bind(this));
     this.ticketOption.on('click', this.selectTicketOption.bind(this));
     this.membersOnlyOption.on('click', this.selectMembersOnlyOption.bind(this));
@@ -252,6 +253,46 @@ class MyEvents {
     this.eventBridgeOption.on('click', this.selectBridgeOption.bind(this));
     this.otherPlatformOption.on('click', this.selectOtherPlatformOption.bind(this));
     this.submitButton.on('click', this.submitNewEvent.bind(this));
+  }
+  managePastEvents() {
+    this.managePastEventsSpan.addClass('contracting');
+    setTimeout(() => {
+      this.managePastEventsSpan.removeClass('contracting');
+      this.managePastEventsSpan.toggleClass('hollow-blue-span');
+      this.managePastEventsSpan.toggleClass('blue-span');
+      this.managePastEventsSection.toggleClass('hidden');
+    }, 2000);
+    if (this.managePastEventsAdded == false) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+        beforeSend: xhr => {
+          xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+        },
+        url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getPastEventsByOrganizer',
+        type: 'GET',
+        success: response => {
+          console.log(response);
+          if (response.length > 0) {
+            let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
+            this.managePastEventsSection.append(newSection);
+            for (let i = 0; i < response.length; i++) {
+              let h2 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').html(response[i]['post_title']);
+              newSection.append(h2);
+              let button = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').addClass('small-blue-button attendance-button').html('update attendance').attr('data-event', response[i]['id']);
+              newSection.append(button);
+              let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
+              newSection.append(newLine);
+            }
+          } else {
+            let p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html("It doesn't look like you're organizing any upcoming events right now.");
+            this.manageUpcomingEventsSection.append(p);
+          }
+          this.managePastEventsAdded = true;
+        },
+        error: response => {
+          console.log(response);
+        }
+      });
+    }
   }
   manageUpcomingOrganizedEvents() {
     this.manageUpcomingEventsSpan.addClass('contracting');
@@ -292,6 +333,8 @@ class MyEvents {
               newSection.append(p);
               p = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['post_content']);
               newSection.append(p);
+              let button = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').addClass('small-red-button cancel-event').html('cancel event').attr('data-event', response[i]['id']);
+              newSection.append(button);
               let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
               newSection.append(newLine);
             }
