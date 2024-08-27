@@ -80,7 +80,7 @@ class MyEvents{
                         for (let i = 0; i < response.length; i++){
                             let h2 = $('<h2/>').html(response[i]['post_title']);
                             newSection.append(h2);
-                            let button = $('<button/>').addClass('small-blue-button attendance-button').html('update attendance').attr('data-event', response[i]['id']);
+                            let button = $('<button/>').addClass('small-blue-button attendance-button').html('update attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this));
                             newSection.append(button);
                             let newLine = $('<div/>').addClass('orange-yellow-line-break-30');
                             newSection.append(newLine);
@@ -246,6 +246,30 @@ class MyEvents{
                 $('#tomc-events-no-limit-error').addClass('hidden');
             }
         }
+    }
+
+    openAttendanceOverlay(e){
+        console.log($(e.target).data('event'));
+        $.ajax({
+            beforeSend: (xhr) => {
+                xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+            },
+            url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getAttendeesByEvent',
+            type: 'GET',
+            data: {
+                'event' : $(e.target).data('event')
+            },
+            success: (response) => {
+                if (response.length > 0){                    
+                    console.log(response);
+                } else {
+                    console.log(response);
+                }
+            },
+            failure: (response) => {
+                console.log(response);
+            }
+        })
     }
 
     selectFreeOption(){

@@ -112,6 +112,9 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
     <?php }
     
 ?></main>
+<div class="hidden" id="tomc-events-attendance-overlay">
+    
+</div>
 
 <?php get_footer();
 ?>

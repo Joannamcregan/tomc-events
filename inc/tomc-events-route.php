@@ -31,6 +31,10 @@ function tomcEventsRegisterRoute() {
         'methods' => 'GET',
         'callback' => 'getPastEventsByOrganizer'
     ));
+    register_rest_route('tomcEvents/v1', 'getAttendeesByEvent', array(
+        'methods' => 'GET',
+        'callback' => 'getAttendeesByEvent'
+    ));
 }
 
 function getUpcomingEvents(){
@@ -164,6 +168,40 @@ function getUpcomingRegisteredEvents(){
             $results[$i]['post_url'] = get_permalink($results[$i]['post_url']);
         }
         return $results;
+    } else {
+        wp_safe_redirect(site_url('/my-account'));
+        return 'fail';
+    }
+}
+
+function getAttendeesByEvent($data){
+    $eventId = sanitize_text_field($data['event']);
+    if (is_user_logged_in()){
+        global $wpdb;
+        $posts_table = $wpdb->prefix . "posts";
+        $postmeta_table = $wpdb->prefix . "postmeta";
+        $event_signups_table = $wpdb->prefix . "tomc_event_signups";
+        $event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
+        $lookup_table = $wpdb->prefix . "wc_order_product_lookup";
+        $order_items_table = $wpdb->prefix . "woocommerce_order_items";
+        $query = 'select signups.*
+        from %i posts
+        join %i signups on posts.id = signups.eventid
+        where posts.post_type = "event"
+        union
+        select orders.*
+        from %i posts
+        join %i eventtickets on eventtickets.eventId = posts.id
+        join %i lookup on eventtickets.productId = lookup.product_id
+        join %i orderitems on lookup.order_id = orderitems.order_id
+        join %i orders on orderitems.order_id = orders.id
+        where posts.post_type = "event"';
+        $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $event_signups_table, $posts_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table), ARRAY_A);
+        for($i = 0; $i < count($results); $i++){
+            $results[$i]['post_url'] = get_permalink($results[$i]['post_url']);
+        }
+        // return $results;
+        return $wpdb->prepare($query, $posts_table, $event_signups_table, $posts_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table);
     } else {
         wp_safe_redirect(site_url('/my-account'));
         return 'fail';
