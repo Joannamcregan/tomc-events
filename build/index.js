@@ -230,6 +230,7 @@ class MyEvents {
     this.otherPlatformOption = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-outside-option');
     this.ticketLimitReminder = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-limit-ticket-reminder');
     this.submitButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-submit');
+    this.attendanceOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-events-attendance-overlay');
     this.events();
     this.requiresTicket = false;
     this.isMembersOnly = false;
@@ -278,7 +279,7 @@ class MyEvents {
             for (let i = 0; i < response.length; i++) {
               let h2 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').html(response[i]['post_title']);
               newSection.append(h2);
-              let button = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').addClass('small-blue-button attendance-button').html('update attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this));
+              let button = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').addClass('small-blue-button attendance-button').html('update attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this, response[i]['post_title']));
               newSection.append(button);
               let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
               newSection.append(newLine);
@@ -442,7 +443,7 @@ class MyEvents {
       }
     }
   }
-  openAttendanceOverlay(e) {
+  openAttendanceOverlay(eventTitle, e) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
       beforeSend: xhr => {
         xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
@@ -455,6 +456,10 @@ class MyEvents {
       success: response => {
         if (response.length > 0) {
           console.log(response);
+          this.attendanceOverlay.removeClass('hidden');
+          this.attendanceOverlay.addClass('search-overlay--active');
+          let instructions = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html('Please check the box next to each person who attended ' + eventTitle + '.');
+          this.attendanceOverlay.append(instructions);
         } else {
           console.log(response);
         }

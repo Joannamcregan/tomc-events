@@ -29,6 +29,7 @@ class MyEvents{
         this.otherPlatformOption = $('#tomc-event-outside-option');
         this.ticketLimitReminder = $('#tomc-event-limit-ticket-reminder');
         this.submitButton = $('#tomc-new-event-submit');
+        this.attendanceOverlay = $('#tomc-events-attendance-overlay');
         this.events();
         this.requiresTicket = false;
         this.isMembersOnly = false;
@@ -79,7 +80,7 @@ class MyEvents{
                         for (let i = 0; i < response.length; i++){
                             let h2 = $('<h2/>').html(response[i]['post_title']);
                             newSection.append(h2);
-                            let button = $('<button/>').addClass('small-blue-button attendance-button').html('update attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this));
+                            let button = $('<button/>').addClass('small-blue-button attendance-button').html('update attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this, response[i]['post_title']));
                             newSection.append(button);
                             let newLine = $('<div/>').addClass('orange-yellow-line-break-30');
                             newSection.append(newLine);
@@ -247,7 +248,7 @@ class MyEvents{
         }
     }
 
-    openAttendanceOverlay(e){
+    openAttendanceOverlay(eventTitle, e){
         $.ajax({
             beforeSend: (xhr) => {
                 xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
@@ -260,6 +261,10 @@ class MyEvents{
             success: (response) => {
                 if (response.length > 0){                    
                     console.log(response);
+                    this.attendanceOverlay.removeClass('hidden');
+                    this.attendanceOverlay.addClass('search-overlay--active');
+                    let instructions = $('<p/>').addClass('centered-text').html('Please check the box next to each person who attended ' + eventTitle + '.')
+                    this.attendanceOverlay.append(instructions);
                 } else {
                     console.log(response);
                 }

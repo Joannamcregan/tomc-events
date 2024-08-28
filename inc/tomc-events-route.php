@@ -203,8 +203,8 @@ function getAttendeesByEvent($data){
         and posts.id = %d
         join %i users on orders.post_author = users.id';
         $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $event_signups_table, $eventId, $users_table, $posts_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table, $eventId, $users_table), ARRAY_A);
-        // return $results;
-        return $wpdb->prepare($query, $posts_table, $event_signups_table, $eventId, $users_table, $posts_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table, $eventId, $users_table);
+        return $results;
+        // return $wpdb->prepare($query, $posts_table, $event_signups_table, $eventId, $users_table, $posts_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table, $eventId, $users_table);
     } else {
         wp_safe_redirect(site_url('/my-account'));
         return 'fail';
