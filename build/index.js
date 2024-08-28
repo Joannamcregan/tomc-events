@@ -37,6 +37,8 @@ class AddEvent {
         if (response > 0) {
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parent().children('.tomc-registration-success').removeClass('hidden');
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parent().children('.tomc-registration-fail').addClass('hidden');
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).addClass('hidden');
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).removeClass('purple-span');
         } else {
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parent().children('.tomc-registration-success').addClass('hidden');
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parent().children('.tomc-registration-fail').removeClass('hidden');
@@ -270,7 +272,6 @@ class MyEvents {
         url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getPastEventsByOrganizer',
         type: 'GET',
         success: response => {
-          console.log(response);
           if (response.length > 0) {
             let newSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
             this.managePastEventsSection.append(newSection);
@@ -442,7 +443,6 @@ class MyEvents {
     }
   }
   openAttendanceOverlay(e) {
-    console.log(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).data('event'));
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
       beforeSend: xhr => {
         xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
@@ -530,7 +530,6 @@ class MyEvents {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tomc-event-time-zone-option').removeClass('tomc-events--option-selected');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).addClass('tomc-events--option-selected');
     this.chosenTimeZone = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).text();
-    console.log(this.chosenTimeZone);
   }
   getRegisteredEvents() {
     this.upcomingRegisteredEventsSpan.addClass('contracting');
@@ -566,8 +565,7 @@ class MyEvents {
               newSection.append(newLine);
             }
           } else {
-            let newP = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html('You currently have no upcoming events.');
-            this.upcomingEventsContainer.append(newP);
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()('#no-registered-events-error').removeClass('hidden');
           }
           this.registeredEventsAdded = true;
         },

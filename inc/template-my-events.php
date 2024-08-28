@@ -9,11 +9,16 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
     <br>
     <?php if (is_user_logged_in()){
         $user = wp_get_current_user();
-        // $userId = get_current_user_id();
         $userId = $user->ID;
+        // $userId = get_current_user_id();
         ?><span class="purple-span" id="upcoming-registered-events-span">Upcoming Registered Events</span>
         <div id="tomc-registered-events-section" class="hidden">
-    
+            <div id="no-registered-events-error" class="hidden">
+                <p class="centered-text">You currently have no registered events.</p>
+                <p class="centered-text">
+                    <a href="<?php echo esc_url(site_url('/events')); ?>">View all events.</a>
+                </p>
+            </div>
         </div>
         <span class="orange-span" id="manage-upcoming-events-span">Manage Upcoming Events</span>
         <div id="tomc-manage-upcoming-events-section" class="hidden">

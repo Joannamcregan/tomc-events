@@ -42,15 +42,18 @@ $results = $wpdb->get_results($wpdb->prepare($query, $posts_table, $users_table,
     <div class="banner"><h1 class="centered-text"><?php echo $results[0]['post_title']; ?></h1></div>
     <br>
     <p class="centered-text"><strong><?php echo 'scheduled for ' . $results[0]['time_string']; ?></strong></p>
-    <div class="generic-content">
-        <?php echo $results[0]['post_content'];
-    ?></div>
+    <div class="accent-wrapper-1">
+        <div class="generic-wrapper-2">
+            <?php echo $results[0]['post_content'];
+        ?></div>
+    </div>
         <?php if (($results[0]['eventdate'] != 'null') && ($results[0]['eventdate'] >= date('Y-m-d H:i:s'))){
         if ($results[0]['members_only'] == 1){
             ?><p class="right-text"><em>This event is members-only.</em></p>
             <?php if (is_user_logged_in()){
-                $userId = get_current_user_id();
+                // $userId = get_current_user_id();
                 $user = wp_get_current_user();
+                $userId = $user->ID;
                 if ($results[0]['ticket_product'] != 'null' && $results[0]['ticket_product'] != ''){
                     //checking for purchased ticket
                     $userQuery = 'select posts.id

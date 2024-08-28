@@ -24,6 +24,8 @@ class AddEvent{
                 if (response > 0){
                     $(e.target).parent().children('.tomc-registration-success').removeClass('hidden');
                     $(e.target).parent().children('.tomc-registration-fail').addClass('hidden');
+                    $(e.target).addClass('hidden');
+                    $(e.target).removeClass('purple-span');
                 } else {
                     $(e.target).parent().children('.tomc-registration-success').addClass('hidden');
                     $(e.target).parent().children('.tomc-registration-fail').removeClass('hidden');

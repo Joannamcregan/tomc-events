@@ -72,8 +72,7 @@ class MyEvents{
                 },
                 url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getPastEventsByOrganizer',
                 type: 'GET',
-                success: (response) => {               
-                    console.log(response);
+                success: (response) => {   
                     if (response.length > 0){            
                         let newSection = $('<div/>').addClass('generic-content');
                         this.managePastEventsSection.append(newSection);           
@@ -249,7 +248,6 @@ class MyEvents{
     }
 
     openAttendanceOverlay(e){
-        console.log($(e.target).data('event'));
         $.ajax({
             beforeSend: (xhr) => {
                 xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
@@ -346,7 +344,6 @@ class MyEvents{
         $('.tomc-event-time-zone-option').removeClass('tomc-events--option-selected');
         $(e.target).addClass('tomc-events--option-selected');
         this.chosenTimeZone = $(e.target).text();
-        console.log(this.chosenTimeZone);
     }
 
     getRegisteredEvents(){
@@ -365,7 +362,7 @@ class MyEvents{
                 url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getUpcomingRegisteredEvents',
                 type: 'GET',
                 success: (response) => {
-                    if (response.length > 0){                    
+                    if (response.length > 0){               
                         let newSection = $('<div/>').addClass('generic-content');
                         this.upcomingRegisteredEventsSection.append(newSection);
                         for (let i = 0; i < response.length; i++){
@@ -383,8 +380,7 @@ class MyEvents{
                             newSection.append(newLine);
                         }
                     } else {
-                        let newP = $('<p/>').addClass('centered-text').html('You currently have no upcoming events.');
-                        this.upcomingEventsContainer.append(newP);
+                        $('#no-registered-events-error').removeClass('hidden');
                     }
                     this.registeredEventsAdded = true;
                 },
