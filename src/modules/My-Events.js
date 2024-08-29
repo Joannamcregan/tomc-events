@@ -80,7 +80,7 @@ class MyEvents{
                         for (let i = 0; i < response.length; i++){
                             let h2 = $('<h2/>').html(response[i]['post_title']);
                             newSection.append(h2);
-                            let button = $('<button/>').addClass('small-blue-button attendance-button').html('update attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this, response[i]['post_title']));
+                            let button = $('<button/>').addClass('small-blue-button attendance-button').html('record attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this, response[i]['post_title']));
                             newSection.append(button);
                             let newLine = $('<div/>').addClass('orange-yellow-line-break-30');
                             newSection.append(newLine);
@@ -249,30 +249,68 @@ class MyEvents{
     }
 
     openAttendanceOverlay(eventTitle, e){
+        this.upcomingRegisteredEventsSpan.addClass('contracting');
         $.ajax({
             beforeSend: (xhr) => {
                 xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
             },
-            url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getAttendeesByEvent',
+            url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/checkAttendanceRecord',
             type: 'GET',
             data: {
                 'event' : $(e.target).data('event')
             },
-            success: (response) => {
+            success: (response) => {         
+                this.attendanceOverlay.removeClass('hidden');
+                this.attendanceOverlay.addClass('search-overlay--active');      
                 if (response.length > 0){                    
                     console.log(response);
-                    this.attendanceOverlay.removeClass('hidden');
-                    this.attendanceOverlay.addClass('search-overlay--active');
-                    let instructions = $('<p/>').addClass('centered-text').html('Please check the box next to each person who attended ' + eventTitle + '.')
+                    let instructions = $('<p/>').addClass('centered-text').html('Our records show that the following people attended ' + eventTitle + '. If you need to correct this record, please reach out to admin.')
                     this.attendanceOverlay.append(instructions);
                 } else {
-                    console.log(response);
+                    $.ajax({
+                        beforeSend: (xhr) => {
+                            xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+                        },
+                        url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/getAttendeesByEvent',
+                        type: 'GET',
+                        data: {
+                            'event' : $(e.target).data('event')
+                        },
+                        success: (response) => {
+                            this.attendanceOverlay.removeClass('hidden');
+                            this.attendanceOverlay.addClass('search-overlay--active');
+                            let instructions = $('<p/>').addClass('centered-text').html('Please check the box next to each person who attended ' + eventTitle + '.')
+                            this.attendanceOverlay.append(instructions);
+                            let registrantsSection = $('<div/>').addClass('generic-content');
+                            this.attendanceOverlay.append(registrantsSection);
+                            if (response.length > 0){                    
+                                console.log(response);
+                                for (let i = 0; i < response.length; i++){
+                                    let checkbox = $('<input />').attr('type', 'checkbox').attr('id', 'tomc-event-registrant-id-' + response[i]['id']).val(response[i]['id']);
+                                    registrantsSection.append(checkbox);
+                                    let checkboxLabel = $('<label />').addClass('tomc-book-organization--large-label').attr('for', 'tomc-event-registrant-id-' + response[i]['id']).html(response[i]['display_name'] + ' (' + response[i]['user_email'] + ')');
+                                    registrantsSection.append(checkboxLabel);
+                                }
+                                let submitAttendeesButton = $('<button/>').addClass('purple-button').html('submit records').on('click', this.submitAttendees.bind(this));
+                                this.attendanceOverlay.append(submitAttendeesButton);
+                            } else {
+                                console.log(response);
+                            }
+                        },
+                        failure: (response) => {
+                            console.log(response);
+                        }
+                    })
                 }
             },
             failure: (response) => {
                 console.log(response);
             }
         })
+    }
+
+    submitAttendees(){
+        console.log('submitting those attendees');
     }
 
     selectFreeOption(){

@@ -10,7 +10,7 @@
     <div id="tomc-past-events-section" class="hidden">
         
     </div>
-    <a class="no-decoration" href="<?php echo esc_url(site_url('/my-events'));?>"><span id="tomc-my-events-span" class="orange-span">My Events</span></a>
+    <a id="tomc-my-events-link" class="no-decoration" href="<?php echo esc_url(site_url('/my-events'));?>"><span id="tomc-my-events-span" class="orange-span">My Events</span></a>
 </main>
 
 <?php get_footer();

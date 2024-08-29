@@ -6,6 +6,7 @@ class EventArchive{
         this.getPastEventsSpan = $('#tomc-past-events-span');
         this.upcomingEventsContainer = $('#tomc-upcoming-events-section');
         this.pastEventsContainer = $('#tomc-past-events-section');
+        this.myEventsLink = $('#tomc-my-events-link');
         this.events();
         this.upcomingEventsAdded = false;
         this.pastEventsAdded = false;
@@ -14,6 +15,11 @@ class EventArchive{
     events(){
         this.getUpcomingEventsSpan.on('click', this.getUpcomingEvents.bind(this));
         this.getPastEventsSpan.on('click', this.getPastEvents.bind(this));
+        this.myEventsLink.on('click', this.animateSpan.bind(this));
+    }
+
+    animateSpan(){
+        this.myEventsLink.children('span').addClass('contracting');
     }
     
     getUpcomingEvents(){

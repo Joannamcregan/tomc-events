@@ -118,7 +118,7 @@ $term_relationships_table = $wpdb->prefix . "term_relationships";
     
 ?></main>
 <div class="hidden search-overlay" id="tomc-events-attendance-overlay">
-    <h1 class="centered-text">Update Attendance</h1>
+    <h1 class="centered-text">Attendance</h1>
 </div>
 
 <?php get_footer();

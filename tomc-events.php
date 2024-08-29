@@ -17,6 +17,7 @@ class TOMCEventsPlugin {
         $this->users_table = $wpdb->prefix . "users";
         $this->event_tickets_table = $wpdb->prefix . "tomc_event_tickets";
         $this->event_signups_table = $wpdb->prefix . "tomc_event_signups";
+        $this->event_attendance_table = $wpdb->prefix . "tomc_event_attendance";
 
         add_action('activate_tomc-events/tomc-events.php', array($this, 'onActivate'));
         // add_action('init', array($this, 'onActivate'));
@@ -187,18 +188,22 @@ class TOMCEventsPlugin {
             eventid bigint(20) unsigned NOT NULL,
             participantid bigint(20) unsigned NOT NULL,
             signupdate datetime NULL,
-            orderid bigint(20) unsigned NULL,
-            didattend smallint(1) NULL,
+            PRIMARY KEY  (id),
+            FOREIGN KEY  (participantid) REFERENCES $this->users_table(id),
+            FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id)
+        ) $this->charset;");
+
+        dbDelta("CREATE TABLE IF NOT EXISTS $this->event_attendance_table (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            eventid bigint(20) unsigned NOT NULL,
+            participantid bigint(20) unsigned NOT NULL,
             recordedby bigint(20) unsigned NULL,
             recordeddate datetime NULL,
             PRIMARY KEY  (id),
             FOREIGN KEY  (participantid) REFERENCES $this->users_table(id),
             FOREIGN KEY  (recordedby) REFERENCES $this->users_table(id),
-            FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id),
-            FOREIGN KEY  (orderid) REFERENCES $this->posts_table(id)
+            FOREIGN KEY  (eventid) REFERENCES $this->posts_table(id)
         ) $this->charset;");
-
-        //take care of event date dateAndTime, locationLink, and isMembersOnly with metadata
     }
 
     function loadTemplate($template){

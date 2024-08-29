@@ -35,6 +35,10 @@ function tomcEventsRegisterRoute() {
         'methods' => 'GET',
         'callback' => 'getAttendeesByEvent'
     ));
+    register_rest_route('tomcEvents/v1', 'checkAttendanceRecord', array(
+        'methods' => 'GET',
+        'callback' => 'checkAttendanceRecord'
+    ));
 }
 
 function getUpcomingEvents(){
@@ -169,6 +173,23 @@ function getUpcomingRegisteredEvents(){
             $results[$i]['post_url'] = get_permalink($results[$i]['post_url']);
         }
         return $results;
+    } else {
+        wp_safe_redirect(site_url('/my-account'));
+        return 'fail';
+    }
+}
+
+function checkAttendanceRecord($data){
+    $eventId = sanitize_text_field($data['event']);
+    if (is_user_logged_in()){
+        global $wpdb;
+        $attendance_table = $wpdb->prefix . "tomc_event_attendance";
+        $query = 'select *
+        from %i records
+        where records.eventid = %d';
+        $results = $wpdb->get_results($wpdb->prepare($query, $attendance_table, $eventId), ARRAY_A);
+        return $results;
+        // return $wpdb->prepare($query, $posts_table, $event_signups_table, $eventId, $users_table, $posts_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table, $eventId, $users_table);
     } else {
         wp_safe_redirect(site_url('/my-account'));
         return 'fail';
