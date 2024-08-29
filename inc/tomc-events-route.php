@@ -39,6 +39,10 @@ function tomcEventsRegisterRoute() {
         'methods' => 'GET',
         'callback' => 'checkAttendanceRecord'
     ));
+    register_rest_route('tomcEvents/v1', 'submitAttendees', array(
+        'methods' => 'GET',
+        'callback' => 'submitAttendees'
+    ));
 }
 
 function getUpcomingEvents(){
@@ -190,6 +194,36 @@ function checkAttendanceRecord($data){
         $results = $wpdb->get_results($wpdb->prepare($query, $attendance_table, $eventId), ARRAY_A);
         return $results;
         // return $wpdb->prepare($query, $posts_table, $event_signups_table, $eventId, $users_table, $posts_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table, $eventId, $users_table);
+    } else {
+        wp_safe_redirect(site_url('/my-account'));
+        return 'fail';
+    }
+}
+
+function submitAttendees($data){
+    $attendees = explode(',', trim(sanitize_text_field($data['attendees']), '[]'));
+    $eventId = sanitize_text_field($data['eventId']);
+    global $wpdb;
+    $event_attendance_table = $wpdb->prefix .  "tomc_event_attendance";    
+    $user = wp_get_current_user();
+    $userId = $user->ID;
+    $now = date('Y-m-d H:i:s');
+    if (is_user_logged_in()){
+        $eventAttendeesQuery = 'insert into ' . $event_attendance_table . '(eventId, participantId, recordedby, recordeddate) values ';
+        if (count($attendees) > 0){
+            for($i = 0; $i < count($attendees); $i++){
+                if (is_numeric($attendees[$i])){
+                    if($i == 0){
+                        $values = '(' . $eventId . ', ' . $attendees[$i] . ',' . $userId . ', "' . $now . '")';                        
+                    }else{
+                        $values = ', (' . $eventId . ', ' . $attendees[$i] . ',' . $userId . ', "' . $now . '")';  
+                    }
+                    $eventAttendeesQuery .= $values;
+                }
+            }
+        }
+        $wpdb->query($wpdb->prepare($eventAttendeesQuery));
+        return 'success';
     } else {
         wp_safe_redirect(site_url('/my-account'));
         return 'fail';

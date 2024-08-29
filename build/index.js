@@ -284,7 +284,7 @@ class MyEvents {
             for (let i = 0; i < response.length; i++) {
               let h2 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<h2/>').html(response[i]['post_title']);
               newSection.append(h2);
-              let button = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').addClass('small-blue-button attendance-button').html('record attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this, response[i]['post_title']));
+              let button = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').addClass('small-blue-button attendance-button').html('record attendance').attr('data-event', response[i]['id']).on('click', this.openAttendanceOverlay.bind(this, response[i]['post_title'], response[i]['id']));
               newSection.append(button);
               let newLine = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('orange-yellow-line-break-30');
               newSection.append(newLine);
@@ -448,7 +448,7 @@ class MyEvents {
       }
     }
   }
-  openAttendanceOverlay(eventTitle, e) {
+  openAttendanceOverlay(eventTitle, eventId, e) {
     this.upcomingRegisteredEventsSpan.addClass('contracting');
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
       beforeSend: xhr => {
@@ -486,12 +486,12 @@ class MyEvents {
               if (response.length > 0) {
                 console.log(response);
                 for (let i = 0; i < response.length; i++) {
-                  let checkbox = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<input />').attr('type', 'checkbox').attr('id', 'tomc-event-registrant-id-' + response[i]['id']).val(response[i]['id']);
+                  let checkbox = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<input />').addClass('tomc-event-attendee-checkbox').attr('type', 'checkbox').attr('id', 'tomc-event-registrant-id-' + response[i]['id']).val(response[i]['id']);
                   registrantsSection.append(checkbox);
                   let checkboxLabel = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<label />').addClass('tomc-book-organization--large-label').attr('for', 'tomc-event-registrant-id-' + response[i]['id']).html(response[i]['display_name'] + ' (' + response[i]['user_email'] + ')');
                   registrantsSection.append(checkboxLabel);
                 }
-                let submitAttendeesButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').addClass('purple-button').html('submit records').on('click', this.submitAttendees.bind(this));
+                let submitAttendeesButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').attr('data-event-id', eventId).addClass('purple-button').html('submit records').on('click', this.submitAttendees.bind(this));
                 this.attendanceOverlay.append(submitAttendeesButton);
               } else {
                 console.log(response);
@@ -508,8 +508,29 @@ class MyEvents {
       }
     });
   }
-  submitAttendees() {
-    console.log('submitting those attendees');
+  submitAttendees(e) {
+    var attendeesToAdd = [];
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tomc-event-attendee-checkbox:checkbox:checked').each(function () {
+      attendeesToAdd.push(parseInt(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val()));
+    });
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', marketplaceData.nonce);
+      },
+      url: tomcBookorgData.root_url + '/wp-json/tomcEvents/v1/submitAttendees',
+      type: 'GET',
+      data: {
+        'attendees': JSON.stringify(attendeesToAdd),
+        'eventId': jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).data('event-id')
+      },
+      success: () => {
+        this.attendanceOverlay.html('Thank you for submitting the attendance record.');
+        setTimeout(() => location.reload(true), 3000);
+      },
+      failure: response => {
+        console.log(response);
+      }
+    });
   }
   selectFreeOption() {
     this.ticketOption.removeClass('tomc-events--option-selected');
