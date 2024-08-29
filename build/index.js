@@ -236,6 +236,8 @@ class MyEvents {
     this.ticketLimitReminder = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-event-limit-ticket-reminder');
     this.submitButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-new-event-submit');
     this.attendanceOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-events-attendance-overlay');
+    this.attendanceOverlayBody = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-events__attendance-overlay-body');
+    this.attendanceOverlayClose = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#tomc-events__attendance-overlay-close');
     this.events();
     this.requiresTicket = false;
     this.isMembersOnly = false;
@@ -261,6 +263,7 @@ class MyEvents {
     this.eventBridgeOption.on('click', this.selectBridgeOption.bind(this));
     this.otherPlatformOption.on('click', this.selectOtherPlatformOption.bind(this));
     this.submitButton.on('click', this.submitNewEvent.bind(this));
+    this.attendanceOverlayClose.on('click', this.closeAttendanceOverlay.bind(this));
   }
   managePastEvents() {
     this.managePastEventsSpan.addClass('contracting');
@@ -465,9 +468,9 @@ class MyEvents {
         if (response.length > 0) {
           console.log(response);
           let instructions = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html('Our records show that the following people attended ' + eventTitle + '. If you need to correct this record, please reach out to admin.');
-          this.attendanceOverlay.append(instructions);
+          this.attendanceOverlayBody.append(instructions);
           let attendees = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
-          this.attendanceOverlay.append(attendees);
+          this.attendanceOverlayBody.append(attendees);
           for (let i = 0; i < response.length; i++) {
             let attendee = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['display_name'] + ' (' + response[i]['user_email'] + ')');
             attendees.append(attendee);
@@ -486,9 +489,9 @@ class MyEvents {
               this.attendanceOverlay.removeClass('hidden');
               this.attendanceOverlay.addClass('search-overlay--active');
               let instructions = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html('Please check the box next to each person who attended ' + eventTitle + '.');
-              this.attendanceOverlay.append(instructions);
+              this.attendanceOverlayBody.append(instructions);
               let registrantsSection = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
-              this.attendanceOverlay.append(registrantsSection);
+              this.attendanceOverlayBody.append(registrantsSection);
               if (response.length > 0) {
                 console.log(response);
                 for (let i = 0; i < response.length; i++) {
@@ -498,7 +501,7 @@ class MyEvents {
                   registrantsSection.append(checkboxLabel);
                 }
                 let submitAttendeesButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<button/>').attr('data-event-id', eventId).addClass('purple-button').html('submit records').on('click', this.submitAttendees.bind(this));
-                this.attendanceOverlay.append(submitAttendeesButton);
+                this.attendanceOverlayBody.append(submitAttendeesButton);
               } else {
                 console.log(response);
               }
@@ -530,7 +533,7 @@ class MyEvents {
         'eventId': jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).data('event-id')
       },
       success: () => {
-        this.attendanceOverlay.html('Thank you for submitting the attendance record.');
+        this.attendanceOverlayBody.html('Thank you for submitting the attendance record.');
         setTimeout(() => location.reload(true), 3000);
       },
       failure: response => {
@@ -604,6 +607,11 @@ class MyEvents {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tomc-event-time-zone-option').removeClass('tomc-events--option-selected');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).addClass('tomc-events--option-selected');
     this.chosenTimeZone = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).text();
+  }
+  closeAttendanceOverlay() {
+    this.attendanceOverlayBody.html('');
+    this.attendanceOverlay.removeClass('search-overlay--active');
+    this.attendanceOverlay.addClass('hidden');
   }
   getRegisteredEvents() {
     this.upcomingRegisteredEventsSpan.addClass('contracting');
