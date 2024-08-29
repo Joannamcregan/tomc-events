@@ -188,10 +188,12 @@ function checkAttendanceRecord($data){
     if (is_user_logged_in()){
         global $wpdb;
         $attendance_table = $wpdb->prefix . "tomc_event_attendance";
-        $query = 'select *
+        $users_table = $wpdb->prefix . "users";
+        $query = 'select users.display_name, users.user_email
         from %i records
+        join %i users on records.participantId = users.id
         where records.eventid = %d';
-        $results = $wpdb->get_results($wpdb->prepare($query, $attendance_table, $eventId), ARRAY_A);
+        $results = $wpdb->get_results($wpdb->prepare($query, $attendance_table, $users_table, $eventId), ARRAY_A);
         return $results;
         // return $wpdb->prepare($query, $posts_table, $event_signups_table, $eventId, $users_table, $posts_table, $event_tickets_table, $lookup_table, $order_items_table, $posts_table, $eventId, $users_table);
     } else {

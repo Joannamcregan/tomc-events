@@ -466,6 +466,12 @@ class MyEvents {
           console.log(response);
           let instructions = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').addClass('centered-text').html('Our records show that the following people attended ' + eventTitle + '. If you need to correct this record, please reach out to admin.');
           this.attendanceOverlay.append(instructions);
+          let attendees = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div/>').addClass('generic-content');
+          this.attendanceOverlay.append(attendees);
+          for (let i = 0; i < response.length; i++) {
+            let attendee = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p/>').html(response[i]['display_name'] + ' (' + response[i]['user_email'] + ')');
+            attendees.append(attendee);
+          }
         } else {
           jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
             beforeSend: xhr => {
